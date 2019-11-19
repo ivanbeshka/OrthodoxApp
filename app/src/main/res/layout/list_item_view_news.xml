@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:text="FSName"
+        android:text="@string/fsname"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:text="status"
+        android:text="@string/status"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/FSName" />
 
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="some text for post"
+        android:text="@string/text_post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatar" />
@@ -77,11 +77,11 @@
         app:srcCompat="@drawable/ic_favorite_black_36dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_number_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="9999"
+        android:text="@string/number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/likes"
         app:layout_constraintTop_toBottomOf="@+id/postImage" />
@@ -94,15 +94,15 @@
         android:paddingStart="16dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/tv_number_like"
         app:srcCompat="@drawable/ic_question_answer_black_36dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tv_number_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="9999"
+        android:text="@string/number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/comments"
         app:layout_constraintTop_toBottomOf="@+id/postImage" />
@@ -115,7 +115,7 @@
         android:paddingStart="24dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/tv_number_comments"
         app:srcCompat="@drawable/ic_send_black_36dp" />
 
     <ImageView
@@ -125,26 +125,26 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView7"
+        app:layout_constraintEnd_toStartOf="@+id/tv_number_see"
         app:layout_constraintTop_toBottomOf="@+id/postImage"
         app:srcCompat="@drawable/ic_remove_red_eye_black_24dp" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tv_number_see"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="9999"
+        android:text="@string/number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postImage" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tv_number_reposts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="9999"
+        android:text="@string/number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/reposts"
         app:layout_constraintTop_toBottomOf="@+id/postImage" />

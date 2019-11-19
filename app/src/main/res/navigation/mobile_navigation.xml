@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_news">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.orthodoxapp.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_news"
+        android:name="com.example.orthodoxapp.ui.news.NewsFragment"
+        android:label="@string/menu_news"
+        tools:layout="@layout/fragment_news" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.orthodoxapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_msgs"
+        android:name="com.example.orthodoxapp.ui.msgs.MsgFragment"
+        android:label="@string/menu_msgs"
+        tools:layout="@layout/fragment_messages" />
 
     <fragment
         android:id="@+id/nav_slideshow"

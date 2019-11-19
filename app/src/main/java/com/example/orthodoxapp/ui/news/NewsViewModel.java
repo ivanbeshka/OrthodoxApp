@@ -1,17 +1,14 @@
-package com.example.orthodoxapp.ui.home;
+package com.example.orthodoxapp.ui.news;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeViewModel extends ViewModel {
+public class NewsViewModel extends ViewModel {
 
     private ArrayList<String> mText;
 
-    public HomeViewModel() {
+    public NewsViewModel() {
 
         mText = new ArrayList<>();
         mText.add("Ivan");

@@ -1,5 +1,4 @@
-package com.example.orthodoxapp.ui.home;
-
+package com.example.orthodoxapp.ui.msgs;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,22 +13,20 @@ import com.example.orthodoxapp.R;
 
 import java.util.ArrayList;
 
-public class MyRecyclerViewHomeAdapter extends RecyclerView.Adapter<MyRecyclerViewHomeAdapter.ViewHolder> {
-
+public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
     private ArrayList<String> mData;
 
-    // data is passed into the constructor
-    MyRecyclerViewHomeAdapter(Context context, ArrayList<String> data) {
+    public MyRecyclerViewMsgAdapter(Context context, ArrayList<String> mData) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        this.mData = mData;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_item_view_rvh, parent, false);
+        View view = mInflater.inflate(R.layout.list_item_view_msg, parent, false);
         return new ViewHolder(view);
     }
 
@@ -44,14 +41,13 @@ public class MyRecyclerViewHomeAdapter extends RecyclerView.Adapter<MyRecyclerVi
         return mData.size();
     }
 
-
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.FSName);
+            myTextView = itemView.findViewById(R.id.tv_msg_reciver);
         }
 
         @Override
@@ -62,5 +58,4 @@ public class MyRecyclerViewHomeAdapter extends RecyclerView.Adapter<MyRecyclerVi
     String getItem(int id) {
         return mData.get(id);
     }
-
 }
