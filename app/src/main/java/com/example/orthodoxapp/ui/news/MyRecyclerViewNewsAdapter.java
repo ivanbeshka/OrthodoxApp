@@ -1,66 +1,68 @@
 package com.example.orthodoxapp.ui.news;
 
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.orthodoxapp.Post;
 import com.example.orthodoxapp.R;
+import com.example.orthodoxapp.databinding.ListItemViewNewsBinding;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerViewNewsAdapter.ViewHolder> {
+public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerViewNewsAdapter.ViewNewsHolder> {
 
 
-    private LayoutInflater mInflater;
-    private ArrayList<String> mData;
+    private List<Post> itemPost = new LinkedList<>();
 
-    // data is passed into the constructor
-    MyRecyclerViewNewsAdapter(Context context, ArrayList<String> data) {
-        this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+
+    public void setData(List<Post> data) {
+        itemPost.clear();
+        itemPost.addAll(data);
     }
+
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_item_view_news, parent, false);
-        return new ViewHolder(view);
+    public ViewNewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ListItemViewNewsBinding bindingNews = DataBindingUtil.inflate(inflater,R.layout.list_item_view_news, parent, false );
+        return new ViewNewsHolder(bindingNews);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String people = mData.get(position);
-        holder.myTextView.setText(people);
+    public void onBindViewHolder(@NonNull ViewNewsHolder holder, int position) {
+        holder.bind(itemPost.get(position));
+
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return itemPost.size();
     }
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+    class ViewNewsHolder extends RecyclerView.ViewHolder {
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.FSName);
+        ListItemViewNewsBinding bindingNews;
+
+        ViewNewsHolder(ListItemViewNewsBinding bindingNews) {
+            super(bindingNews.getRoot());
+            this.bindingNews = bindingNews;
         }
 
-        @Override
-        public void onClick(View view) {
-        }
-    }
+        void bind(Post post){
+            bindingNews.setPost(post);
 
-    String getItem(int id) {
-        return mData.get(id);
+            bindingNews.executePendingBindings();
+        }
+
     }
 
 }

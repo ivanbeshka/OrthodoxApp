@@ -29,8 +29,10 @@ public class NewsFragment extends Fragment {
 
         final RecyclerView recyclerViewNews = root.findViewById(R.id.recyclerViewNews);
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewNewsAdapter(getContext(), newsViewModel.getText());
+        adapter = new MyRecyclerViewNewsAdapter();
+        adapter.setData(newsViewModel.getPosts());
         recyclerViewNews.setAdapter(adapter);
+
 
         //decorations
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewNews.getContext(),
