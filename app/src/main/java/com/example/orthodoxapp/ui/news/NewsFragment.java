@@ -18,7 +18,7 @@ public class NewsFragment extends Fragment {
 
     private NewsViewModel newsViewModel;
     private MyRecyclerViewNewsAdapter adapter;
-
+    private RecyclerView recyclerViewNews;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -26,13 +26,11 @@ public class NewsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);
 
-
-        final RecyclerView recyclerViewNews = root.findViewById(R.id.recyclerViewNews);
+        recyclerViewNews = root.findViewById(R.id.recyclerViewNews);
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MyRecyclerViewNewsAdapter();
         adapter.setData(newsViewModel.getPosts());
         recyclerViewNews.setAdapter(adapter);
-
 
         //decorations
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewNews.getContext(),

@@ -1,5 +1,4 @@
-package com.example.orthodoxapp.ui.news;
-
+package com.example.orthodoxapp.ui.profile;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,8 +14,7 @@ import com.example.orthodoxapp.databinding.ListItemViewNewsBinding;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerViewNewsAdapter.ViewNewsHolder> {
-
+public class MyRecyclerViewProfileAdapter extends RecyclerView.Adapter<MyRecyclerViewProfileAdapter.ViewProfileHolder>{
 
     private List<Post> itemPost = new LinkedList<>();
 
@@ -29,17 +27,18 @@ public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerVi
 
     @NonNull
     @Override
-    public ViewNewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewProfileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ListItemViewNewsBinding bindingNews = DataBindingUtil.inflate(inflater,R.layout.list_item_view_news, parent, false );
-        return new ViewNewsHolder(bindingNews);
+        ListItemViewNewsBinding bindingNews = DataBindingUtil.inflate(inflater, R.layout.list_item_view_news, parent, false );
+        return new MyRecyclerViewProfileAdapter.ViewProfileHolder(bindingNews);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewNewsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewProfileHolder holder, int position) {
         holder.bind(itemPost.get(position));
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -48,11 +47,11 @@ public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerVi
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewNewsHolder extends RecyclerView.ViewHolder {
+    class ViewProfileHolder extends RecyclerView.ViewHolder {
 
         ListItemViewNewsBinding bindingNews;
 
-        ViewNewsHolder(ListItemViewNewsBinding bindingNews) {
+        ViewProfileHolder(ListItemViewNewsBinding bindingNews) {
             super(bindingNews.getRoot());
             this.bindingNews = bindingNews;
         }

@@ -2,4 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/nav_news"
+        android:icon="@drawable/ic_news"
+        android:title="@string/menu_news" />
+    <item
+        android:id="@+id/nav_msgs"
+        android:icon="@drawable/ic_chat_bubble_outline_black_24dp"
+        android:title="@string/menu_msgs" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_account_circle_24px"
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/nav_tools"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="@string/menu_tools" />
+    
 </menu>

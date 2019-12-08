@@ -14,11 +14,17 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="menu_news">News</string>
-    <string name="fsname">FSName</string>
+    <string name="fsname">Name Surname</string>
     <string name="status">Status</string>
     <string name="text_post">some text for post</string>
     <string name="number">9999</string>
     <string name="some_msg">some msg</string>
     <string name="time">00:00</string>
     <string name="menu_msgs">Messages</string>
+    <string name="communicate">Communicate</string>
+    <string name="follow">follow</string>
+    <string name="followers">followers</string>
+    <string name="posts">posts</string>
+    <string name="following">following</string>
+    <string name="profile">Profile</string>
 </resources>

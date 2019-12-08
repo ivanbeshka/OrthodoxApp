@@ -1,24 +1,21 @@
-package com.example.orthodoxapp.ui.news;
+package com.example.orthodoxapp.ui.profile;
 
-import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.orthodoxapp.Post;
 import com.example.orthodoxapp.User;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class NewsViewModel extends ViewModel {
-
-
-    //public ObservableField<Post> post = new ObservableField<>();
+public class ProfileViewModel extends ViewModel {
 
     private List<Post> posts = new LinkedList<>();
 
 
-    public NewsViewModel() {
+    public ProfileViewModel() {
         User user = new User("UserName", 323, "online", 4735, 5486, 85,
                 "Moscow", "selfie");
         Post post = new Post(1, 3, 4, 1, user, "some text", "bdfsbsbd");
