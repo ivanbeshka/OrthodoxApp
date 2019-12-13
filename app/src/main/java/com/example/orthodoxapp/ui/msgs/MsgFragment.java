@@ -16,17 +16,16 @@ import com.example.orthodoxapp.R;
 
 public class MsgFragment extends Fragment {
 
-    private MsgViewModel msgViewModel;
-    private MyRecyclerViewMsgAdapter adapter;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        msgViewModel = ViewModelProviders.of(this).get(MsgViewModel.class);
+        MsgViewModel msgViewModel = ViewModelProviders.of(this).get(MsgViewModel.class);
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
 
-        final RecyclerView recyclerViewMsg = root.findViewById(R.id.recyclerViewMsg);
+        RecyclerView recyclerViewMsg = root.findViewById(R.id.recyclerViewMsg);
         recyclerViewMsg.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewMsgAdapter(getContext(), msgViewModel.getText());
+
+        MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter();
+        adapter.setData(msgViewModel.getmMessage());
         recyclerViewMsg.setAdapter(adapter);
 
         //decorations

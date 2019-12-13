@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.orthodoxapp.Post;
+import com.example.orthodoxapp.dataModel.Post;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.databinding.ListItemViewNewsBinding;
 
@@ -30,7 +30,7 @@ public class MyRecyclerViewProfileAdapter extends RecyclerView.Adapter<MyRecycle
     public ViewProfileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ListItemViewNewsBinding bindingNews = DataBindingUtil.inflate(inflater, R.layout.list_item_view_news, parent, false );
-        return new MyRecyclerViewProfileAdapter.ViewProfileHolder(bindingNews);
+        return new ViewProfileHolder(bindingNews);
     }
 
     @Override

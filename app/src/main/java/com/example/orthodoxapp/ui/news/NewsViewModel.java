@@ -1,12 +1,10 @@
 package com.example.orthodoxapp.ui.news;
 
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.example.orthodoxapp.Post;
-import com.example.orthodoxapp.User;
+import com.example.orthodoxapp.dataModel.Post;
+import com.example.orthodoxapp.dataModel.User;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,21 +17,16 @@ public class NewsViewModel extends ViewModel {
 
 
     public NewsViewModel() {
-        User user = new User("UserName", 323, "online", 4735, 5486, 85,
-                "Moscow", "selfie");
-        Post post = new Post(1, 3, 4, 1, user, "some text", "bdfsbsbd");
 
-        posts.add(0, post);
-        posts.add(1, post);
-        posts.add(2, post);
-        posts.add(3, post);
-        posts.add(4, post);
-        posts.add(5, post);
-        posts.add(6, post);
-        posts.add(7, post);
-        posts.add(8, post);
-        posts.add(9, post);
-        posts.add(10, post);
+        User user = User.builder().name("ivan").status("online").build();
+
+        Post post = Post.builder().comments(8).likes(999)
+                .reposts(957).user(user)
+                .views(465).text("gbshfbgsdbfgbgbs").build();
+
+        for (int i = 0; i < 50; i++) {
+            posts.add(post);
+        }
     }
 
     List<Post> getPosts() {

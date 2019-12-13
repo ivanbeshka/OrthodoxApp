@@ -1,61 +1,63 @@
 package com.example.orthodoxapp.ui.msgs;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orthodoxapp.R;
+import com.example.orthodoxapp.dataModel.Message;
+import com.example.orthodoxapp.databinding.ListItemViewMsgBinding;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewHolder> {
 
-    private LayoutInflater mInflater;
-    private ArrayList<String> mData;
+public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewMsgHolder> {
 
-    public MyRecyclerViewMsgAdapter(Context context, ArrayList<String> mData) {
-        this.mInflater = LayoutInflater.from(context);
-        this.mData = mData;
+    private List<Message> itemMsg = new LinkedList<>();
+
+    public void setData(List<Message> data) {
+        itemMsg.clear();
+        itemMsg.addAll(data);
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_item_view_msg, parent, false);
-        return new ViewHolder(view);
+    public ViewMsgHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ListItemViewMsgBinding bindingMsg = DataBindingUtil.inflate(inflater, R.layout.list_item_view_msg,
+                parent, false);
+        return new ViewMsgHolder(bindingMsg);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String people = mData.get(position);
-        holder.myTextView.setText(people);
+    public void onBindViewHolder(@NonNull ViewMsgHolder holder, int position) {
+        holder.bind(itemMsg.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return itemMsg.size();
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+    public class ViewMsgHolder extends RecyclerView.ViewHolder{
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.tv_msg_reciver);
+        ListItemViewMsgBinding bindingMsg;
+
+        ViewMsgHolder(ListItemViewMsgBinding bindingMsg) {
+            super(bindingMsg.getRoot());
+            this.bindingMsg = bindingMsg;
         }
 
-        @Override
-        public void onClick(View view) {
-        }
-    }
+        void bind(Message msg){
+            bindingMsg.setMessage(msg);
 
-    String getItem(int id) {
-        return mData.get(id);
+            bindingMsg.executePendingBindings();
+        }
     }
 }

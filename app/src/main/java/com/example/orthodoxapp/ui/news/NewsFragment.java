@@ -16,19 +16,15 @@ import com.example.orthodoxapp.R;
 
 public class NewsFragment extends Fragment {
 
-    private NewsViewModel newsViewModel;
-    private MyRecyclerViewNewsAdapter adapter;
-    private RecyclerView recyclerViewNews;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        newsViewModel =
-                ViewModelProviders.of(this).get(NewsViewModel.class);
+        NewsViewModel newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);
 
-        recyclerViewNews = root.findViewById(R.id.recyclerViewNews);
+        RecyclerView recyclerViewNews = root.findViewById(R.id.recyclerViewNews);
         recyclerViewNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewNewsAdapter();
+
+        MyRecyclerViewNewsAdapter adapter = new MyRecyclerViewNewsAdapter();
         adapter.setData(newsViewModel.getPosts());
         recyclerViewNews.setAdapter(adapter);
 

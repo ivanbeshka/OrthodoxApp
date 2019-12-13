@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "932623184506",
+    "firebase_url": "https://orthodoxapp-1ba63.firebaseio.com",
+    "project_id": "orthodoxapp-1ba63",
+    "storage_bucket": "orthodoxapp-1ba63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932623184506:android:0b4e9159a1374c9ed901c3",
+        "android_client_info": {
+          "package_name": "com.example.orthodoxapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932623184506-rkvjoucqhg98in1sqg82ogjc4bql0gc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.orthodoxapp",
+            "certificate_hash": "d9e71f82dd0241177a7b2e08d93b129eb468f467"
+          }
+        },
+        {
+          "client_id": "932623184506-8fimps0uvjs7km63binmjbat8os7s57a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGJg4Q9fgfyRIB4n1TI-pO3nd0-wUnr-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932623184506-8fimps0uvjs7km63binmjbat8os7s57a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

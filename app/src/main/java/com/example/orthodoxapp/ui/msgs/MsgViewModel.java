@@ -1,42 +1,31 @@
 package com.example.orthodoxapp.ui.msgs;
 
 import androidx.lifecycle.ViewModel;
-import java.util.ArrayList;
+
+import com.example.orthodoxapp.dataModel.Message;
+import com.example.orthodoxapp.dataModel.User;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MsgViewModel extends ViewModel {
 
-    private ArrayList<String> mText;
+    private List<Message> mMessage = new LinkedList<>();
 
     public MsgViewModel() {
-        mText = new ArrayList<>();
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
-        mText.add("Ivan");
+
+        User user = User.builder().name("vasiliy").status("online").build();
+
+        Message msg = Message.builder().addressee(user).textMessage("gfjsdgsdfibg").build();
+
+        for (int i = 0; i < 50; i++) {
+            mMessage.add(msg);
+        }
+
+
     }
 
-    public ArrayList<String> getText() {
-        return mText;
+    public List<Message> getmMessage() {
+        return mMessage;
     }
 }
