@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorAccentForProfile">#EB4580</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorChatMsg">#BFE91E63</color>
+    <color name="colorChatMsgTheir">#BF1EE9C0</color>
+    <color name="colorBlack">#BF000000</color>
 </resources>

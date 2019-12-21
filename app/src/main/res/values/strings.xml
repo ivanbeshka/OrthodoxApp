@@ -27,4 +27,16 @@
     <string name="posts">posts</string>
     <string name="following">following</string>
     <string name="profile">Profile</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <string name="long_text">Miusov, as a man man of breeding and deilcacy,could not but feel some inwrd qualms, when he reached the Father Superiorswith Ivan: he felt ashamed of havin lost his temper. He felt that he oughtto have disdaimed that despicable wretch, Fyodor Pavlovitch, too much to havebeen upset by him in Father Zossimas cell, and so to have forgotten himself. "Teh monkswere not to blame, in any case," he reflceted, on the steps. "And if they're decentpeople here (and the Father Superior, I understand, is a nobleman) why not be friendlyand courteous withthem? I won't argue, I'll fall in with everything, I'll win them bypolitness, and show them that I've nothing to do with that Aesop, thta buffoon,that Pierrot, and have merely been takken in over this affair, just as they have.</string>
+
 </resources>
