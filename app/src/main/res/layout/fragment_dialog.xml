@@ -8,16 +8,16 @@
     android:padding="4dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewDialog"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_chat"
+        app:layout_constraintBottom_toTopOf="@+id/layout_input_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/layout_chat"
+        android:id="@+id/layout_input_chat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#ffffff"
