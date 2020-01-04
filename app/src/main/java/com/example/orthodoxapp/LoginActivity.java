@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.orthodoxapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,6 +38,7 @@ public class LoginActivity extends BaseActivity {
     private EditText etEmail, etPass;
     private Button btnLogin, btnCreateAcc, btnForgotPass;
     private View btnSignInGoogle;
+    private ConstraintLayout root;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private Intent intentMain;
@@ -47,7 +49,6 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         initViews();
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -73,6 +74,8 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                hideKeyboard(root);
 
                 String email, password;
                 email = etEmail.getText().toString();
@@ -109,12 +112,20 @@ public class LoginActivity extends BaseActivity {
                                     Toast.makeText(getApplicationContext(), R.string.email_or_pass_not_right, Toast.LENGTH_SHORT).show();
                                 }
 
-                                hideProgressBar();
+
                             }
                         });
+
+                hideProgressBar();
             }
         });
 
+        btnForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ForgotPassActivity.class));
+            }
+        });
 
         btnCreateAcc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,21 +135,12 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-
-    //if user already login start main class
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(intentMain);
-        }
-    }
-
     //activity gets Google api result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        showProgressBar();
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -153,9 +155,11 @@ public class LoginActivity extends BaseActivity {
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Snackbar.make(findViewById(R.id.login_activity), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.login_layout), R.string.auth_fail, Snackbar.LENGTH_SHORT).show();
             }
         }
+
+        hideProgressBar();
     }
 
     //auth if google account
@@ -173,12 +177,14 @@ public class LoginActivity extends BaseActivity {
                             startActivity(intentMain);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Snackbar.make(findViewById(R.id.login_activity), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(R.id.login_layout), R.string.auth_fail, Snackbar.LENGTH_SHORT).show();
                         }
 
-                        hideProgressBar();
+
                     }
                 });
+
+        hideProgressBar();
     }
 
     private void initViews() {
@@ -188,12 +194,9 @@ public class LoginActivity extends BaseActivity {
         btnForgotPass = findViewById(R.id.btnForgotPass);
         btnLogin = findViewById(R.id.btnLogin);
         btnSignInGoogle = findViewById(R.id.btnSignInGoogle);
+        root = findViewById(R.id.login_layout);
         setProgressBar(R.id.progressBarLogin);
 
     }
 
-    static boolean isValidEmail(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
-    }
 }

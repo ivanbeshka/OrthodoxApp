@@ -38,6 +38,8 @@ public class RegistrationActivity extends BaseActivity {
             @Override
             public void onClick(final View v) {
 
+                hideKeyboard(root);
+
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
                 String repPass = etRepeatPass.getText().toString();
@@ -69,7 +71,6 @@ public class RegistrationActivity extends BaseActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    hideKeyboard(root);
                                     Snackbar.make(root, R.string.right_registration, 8000).show();
                                 } else {
                                     Toast.makeText(getApplicationContext(), R.string.email_or_pass_not_right, Toast.LENGTH_SHORT).show();
@@ -100,10 +101,5 @@ public class RegistrationActivity extends BaseActivity {
         btnGoLogin = findViewById(R.id.btnGoToLogin);
         root = findViewById(R.id.rootRegister);
         setProgressBar(R.id.progressBarCreate);
-    }
-
-    static boolean isValidEmail(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
     }
 }
