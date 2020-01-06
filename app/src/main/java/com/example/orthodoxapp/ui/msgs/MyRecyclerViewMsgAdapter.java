@@ -1,8 +1,9 @@
 package com.example.orthodoxapp.ui.msgs;
 
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -10,54 +11,71 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.Message;
-import com.example.orthodoxapp.databinding.ListItemViewMsgBinding;
+import com.example.orthodoxapp.databinding.ItemViewMsgBinding;
 
 import java.util.LinkedList;
 import java.util.List;
 
+public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewHolderMsg>
+        implements ItemClickListener {
 
-public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewMsgHolder> {
+    private List<Message> listMsg = new LinkedList<>();
+    private Context context;
 
-    private List<Message> itemMsg = new LinkedList<>();
+    public MyRecyclerViewMsgAdapter(Context context) {
+        this.context = context;
+    }
 
     public void setData(List<Message> data) {
-        itemMsg.clear();
-        itemMsg.addAll(data);
+        listMsg.clear();
+        listMsg.addAll(data);
     }
 
     @NonNull
     @Override
-    public ViewMsgHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ListItemViewMsgBinding bindingMsg = DataBindingUtil.inflate(inflater, R.layout.list_item_view_msg,
+    public ViewHolderMsg onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemViewMsgBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
+                R.layout.item_view_msg,
                 parent, false);
-        return new ViewMsgHolder(bindingMsg);
+
+        return new ViewHolderMsg(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewMsgHolder holder, int position) {
-        holder.bind(itemMsg.get(position));
+    public void onBindViewHolder(@NonNull ViewHolderMsg holder, int position) {
+        Message msg = listMsg.get(position);
+        holder.bind(msg);
+        //clickListener
+        holder.bindingMsg.setItemClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        return itemMsg.size();
+        return listMsg.size();
+    }
+
+    @Override
+    public void onItemClick(Message message) {
+        Toast.makeText(context, message.getTextMessage(), Toast.LENGTH_LONG).show();
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewMsgHolder extends RecyclerView.ViewHolder{
+    class ViewHolderMsg extends RecyclerView.ViewHolder {
 
-        ListItemViewMsgBinding bindingMsg;
+        ItemViewMsgBinding bindingMsg;
 
-        ViewMsgHolder(ListItemViewMsgBinding bindingMsg) {
+        ViewHolderMsg(ItemViewMsgBinding bindingMsg) {
             super(bindingMsg.getRoot());
             this.bindingMsg = bindingMsg;
         }
 
-        void bind(Message msg){
-            bindingMsg.setMessage(msg);
-
+        public void bind(Message message) {
+            bindingMsg.setMessage(message);
             bindingMsg.executePendingBindings();
         }
+
     }
+
 }
+

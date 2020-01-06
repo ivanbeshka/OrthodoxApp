@@ -24,7 +24,7 @@ public class MsgFragment extends Fragment {
         RecyclerView recyclerViewMsg = root.findViewById(R.id.recyclerViewMsg);
         recyclerViewMsg.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter();
+        MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter(getContext());
         adapter.setData(msgViewModel.getmMessage());
         recyclerViewMsg.setAdapter(adapter);
 

@@ -59,7 +59,6 @@ public class MyRecyclerViewNewsAdapter extends RecyclerView.Adapter<MyRecyclerVi
 
         void bind(Post post) {
             bindingNews.setPost(post);
-
             bindingNews.executePendingBindings();
         }
 
