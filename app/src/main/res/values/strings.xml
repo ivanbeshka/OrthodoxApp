@@ -49,5 +49,6 @@
     <string name="rest_right">Password reset link was sent your email address</string>
     <string name="error_send_pass">Mail sending error</string>
     <string name="auth_fail">Authentication Failed.</string>
+    <string name="dialog">Dialog</string>
 
 </resources>

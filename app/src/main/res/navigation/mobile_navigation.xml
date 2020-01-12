@@ -15,7 +15,11 @@
         android:id="@+id/nav_msgs"
         android:name="com.example.orthodoxapp.ui.msgs.MsgFragment"
         android:label="@string/menu_msgs"
-        tools:layout="@layout/fragment_messages" />
+        tools:layout="@layout/fragment_messages" >
+        <action
+            android:id="@+id/action_nav_msgs_to_nav_dialog"
+            app:destination="@+id/nav_dialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_profile"
@@ -28,5 +32,11 @@
         android:name="com.example.orthodoxapp.ui.tools.ToolsFragment"
         android:label="@string/menu_tools"
         tools:layout="@layout/fragment_tools" />
+
+    <fragment
+        android:id="@+id/nav_dialog"
+        android:name="com.example.orthodoxapp.ui.dialog.DialogFragment"
+        android:label="@string/dialog"
+        tools:layout="@layout/fragment_dialog"/>
 
 </navigation>

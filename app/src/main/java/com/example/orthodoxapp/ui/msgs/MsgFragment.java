@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orthodoxapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MsgFragment extends Fragment {
 
@@ -24,7 +25,7 @@ public class MsgFragment extends Fragment {
         RecyclerView recyclerViewMsg = root.findViewById(R.id.recyclerViewMsg);
         recyclerViewMsg.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter(getContext());
+        MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter(getContext(), getFragmentManager().beginTransaction());
         adapter.setData(msgViewModel.getmMessage());
         recyclerViewMsg.setAdapter(adapter);
 

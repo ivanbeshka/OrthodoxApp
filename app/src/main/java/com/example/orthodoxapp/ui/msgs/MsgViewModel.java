@@ -17,10 +17,13 @@ public class MsgViewModel extends ViewModel {
         User user = User.builder().name("vasiliy").status("online").build();
 
         Message msg = Message.builder().addressee(user).textMessage("gfjsdgsdfibg").build();
+        Message msg1 = Message.builder().addressee(user).textMessage("bsebgesrgieg").build();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             mMessage.add(msg);
+            mMessage.add(msg1);
         }
+
 
 
     }

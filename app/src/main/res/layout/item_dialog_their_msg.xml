@@ -9,7 +9,7 @@
     android:padding="10dp">
 
     <View
-        android:id="@+id/view_avatar"
+        android:id="@+id/view_their_avatar"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:background="@drawable/avatar_circle"
@@ -21,18 +21,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/their_msg_shape"
         android:padding="10dp"
         android:text="@string/long_text"
         android:textColor="@color/colorBlack"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_their_msg_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/view_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/tv_fsName_their_msg" />
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_their_avatar" />
 
     <TextView
         android:id="@+id/tv_fsName_their_msg"
@@ -40,6 +39,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/fsname"
-        app:layout_constraintStart_toEndOf="@+id/view_avatar"
+        app:layout_constraintBottom_toTopOf="@+id/tv_their_message_body"
+        app:layout_constraintStart_toEndOf="@+id/view_their_avatar"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_their_msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="12:30   01/02/2018"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

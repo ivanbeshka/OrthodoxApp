@@ -13,7 +13,7 @@ import lombok.val;
 public class User {
 
     private String name;
-    private UUID id;
+    private String id;
     @val
     private  int phoneNumber;
     private int bDay;
