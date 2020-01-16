@@ -25,7 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends BaseActivity implements ItemClickListener {
+public class MainActivity extends BaseActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     private BottomNavigationView bottomNavigationView;
@@ -54,26 +54,20 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if(destination.getId() == R.id.nav_dialog){
-                    hideBotNav();
-                }else {
-                    showBotNav();
-                }
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if(destination.getId() == R.id.nav_dialog){
+                hideBotNav();
+            }else {
+                showBotNav();
             }
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-                }
+        authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         };
 
@@ -104,10 +98,5 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
-    }
-
-    @Override
-    public void onItemClick(Message message) {
-        navController.navigate(R.id.action_nav_msgs_to_nav_dialog);
     }
 }

@@ -9,8 +9,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +31,11 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
 
     private List<Message> listMsg = new LinkedList<>();
     private Context context;
-    private FragmentTransaction fragmentTransaction;
+    private Fragment fragment;
 
-    public MyRecyclerViewMsgAdapter(Context context, FragmentTransaction fragmentTransaction) {
+    public MyRecyclerViewMsgAdapter(Context context, Fragment fragment) {
         this.context = context;
-        this.fragmentTransaction = fragmentTransaction;
+        this.fragment = fragment;
     }
 
     public void setData(List<Message> data) {
@@ -65,9 +68,12 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
 
     @Override
     public void onItemClick(Message message) {
+        if(fragment.getActivity() != null){
+            NavController navController = Navigation.findNavController(fragment.getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_dialog);
+        }
 
-//        fragmentTransaction.replace(R.id.nav_host_fragment, new DialogFragment());
-//        fragmentTransaction.commit();
+
     }
 
     // stores and recycles views as they are scrolled off screen
@@ -80,7 +86,7 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
             this.bindingMsg = bindingMsg;
         }
 
-        public void bind(Message message) {
+        void bind(Message message) {
             bindingMsg.setMessage(message);
             bindingMsg.executePendingBindings();
         }
