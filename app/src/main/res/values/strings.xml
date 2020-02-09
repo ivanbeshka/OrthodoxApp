@@ -34,11 +34,11 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be >6 characters</string>
     <string name="login_failed">"Login failed"</string>
 
     <string name="long_text">Miusov, as a man man of breeding and deilcacy,could not but feel some inwrd qualms, when he reached the Father Superiorswith Ivan: he felt ashamed of havin lost his temper. He felt that he oughtto have disdaimed that despicable wretch, Fyodor Pavlovitch, too much to havebeen upset by him in Father Zossimas cell, and so to have forgotten himself. "Teh monkswere not to blame, in any case," he reflceted, on the steps. "And if they're decentpeople here (and the Father Superior, I understand, is a nobleman) why not be friendlyand courteous withthem? I won't argue, I'll fall in with everything, I'll win them bypolitness, and show them that I've nothing to do with that Aesop, thta buffoon,that Pierrot, and have merely been takken in over this affair, just as they have.</string>
-    <string name="create_acc">Create Account</string>
+    <string name="create_acc">Sign up</string>
     <string name="pls_enter_email">Please enter email</string>
     <string name="pls_enter_right_email">Please enter right email</string>
     <string name="pass_length">Password length less than 6</string>
@@ -50,5 +50,11 @@
     <string name="error_send_pass">Mail sending error</string>
     <string name="auth_fail">Authentication Failed.</string>
     <string name="dialog">Dialog</string>
+    <string name="please_wait">Registration. Please wait…</string>
+
+    <string name="map">Map</string>
+
+    <string name="map_key" translatable="false">AIzaSyBGJg4Q9fgfyRIB4n1TI-pO3nd0-wUnr-Y</string>
+    <string name="logout_from_your_account">logout from your account</string>
 
 </resources>

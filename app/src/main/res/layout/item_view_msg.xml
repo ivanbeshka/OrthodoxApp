@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{message.addressee.name}"
+            android:text="@{message.addresseeName}"
             app:layout_constraintStart_toEndOf="@+id/iv_addressee_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
             android:id="@+id/tv_time_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(message.messageDate)}"
+            android:text="@{String.valueOf(message.messageTime)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

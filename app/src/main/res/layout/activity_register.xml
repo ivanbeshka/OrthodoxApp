@@ -36,14 +36,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etNameCreate"
+        android:id="@+id/etFirstNameCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_rectangle_edittext"
-        android:hint="Name"
+        android:hint="input First Name"
         android:inputType="textPersonName"
         android:padding="8dp"
         android:textColor="#80FFFFFF"
@@ -51,6 +51,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/etSurNameCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_rectangle_edittext"
+        android:hint="input Surname"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        android:textColor="#80FFFFFF"
+        android:textColorHint="#80FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etFirstNameCreate" />
 
 
     <EditText
@@ -61,14 +78,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_rectangle_edittext"
-        android:hint="Email"
+        android:hint="input Email"
         android:inputType="textEmailAddress"
         android:padding="8dp"
         android:textColor="#80FFFFFF"
         android:textColorHint="#80FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNameCreate" />
+        app:layout_constraintTop_toBottomOf="@+id/etSurNameCreate" />
 
     <EditText
         android:id="@+id/etPasswordCreate"

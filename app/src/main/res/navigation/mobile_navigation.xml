@@ -3,29 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_news">
-
-    <fragment
-        android:id="@+id/nav_news"
-        android:name="com.example.orthodoxapp.ui.news.NewsFragment"
-        android:label="@string/menu_news"
-        tools:layout="@layout/fragment_news" />
+    app:startDestination="@id/nav_msgs">
 
     <fragment
         android:id="@+id/nav_msgs"
         android:name="com.example.orthodoxapp.ui.msgs.MsgFragment"
         android:label="@string/menu_msgs"
-        tools:layout="@layout/fragment_messages" >
+        tools:layout="@layout/fragment_messages">
         <action
             android:id="@+id/action_nav_msgs_to_nav_dialog"
             app:destination="@+id/nav_dialog" />
     </fragment>
-
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.example.orthodoxapp.ui.profile.ProfileFragment"
-        android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_tools"
@@ -37,6 +25,12 @@
         android:id="@+id/nav_dialog"
         android:name="com.example.orthodoxapp.ui.dialog.DialogFragment"
         android:label="@string/dialog"
-        tools:layout="@layout/fragment_dialog"/>
+        tools:layout="@layout/fragment_dialog" />
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.orthodoxapp.ui.map.MapFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_map"/>
 
 </navigation>

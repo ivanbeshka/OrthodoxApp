@@ -14,10 +14,13 @@ public class MsgViewModel extends ViewModel {
 
     public MsgViewModel() {
 
-        User user = User.builder().name("vasiliy").status("online").build();
+        User user = User.builder().firstName("").build();
 
-        Message msg = Message.builder().addressee(user).textMessage("gfjsdgsdfibg").build();
-        Message msg1 = Message.builder().addressee(user).textMessage("bsebgesrgieg").build();
+        Message msg = Message.builder()
+                .addresseeUid("m2qKjOfgQ1caRyuxHSOt5HND5eF3")
+                .textMessage("gfjsdgsdfibg").addresseeName("vasiliy").build();
+        Message msg1 = Message.builder().addresseeUid("m2qKjOfgQ1caRyuxHSOt5HND5eF3")
+                .textMessage("bsebgesrgieg").addresseeName("vasiliy").build();
 
         for (int i = 0; i < 10; i++) {
             mMessage.add(msg);

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DialogViewModel extends ViewModel {
 
-    private FirebaseListAdapter<Message> msgFirebaseAdapter;
+
 
 
 //    public List<Message> getDialog(){

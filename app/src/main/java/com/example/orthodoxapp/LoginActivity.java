@@ -3,31 +3,23 @@ package com.example.orthodoxapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.orthodoxapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
@@ -63,76 +55,57 @@ public class LoginActivity extends BaseActivity {
 
 
         //registration Google account
-        btnSignInGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = googleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
+        btnSignInGoogle.setOnClickListener(v -> {
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnLogin.setOnClickListener(v -> {
 
-                hideKeyboard(root);
+            hideKeyboard(root);
 
-                String email, password;
-                email = etEmail.getText().toString();
-                password = etPass.getText().toString();
+            String email, password;
+            email = etEmail.getText().toString();
+            password = etPass.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), R.string.pls_enter_email, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (!isValidEmail(email)) {
-                    Toast.makeText(getApplicationContext(), R.string.pls_enter_right_email, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), R.string.pass_length, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                showProgressBar();
-
-                firebaseAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                if (task.isSuccessful()) {
-
-                                    startActivity(intentMain);
-
-                                } else {
-
-                                    Toast.makeText(getApplicationContext(), R.string.email_or_pass_not_right, Toast.LENGTH_SHORT).show();
-                                }
-
-
-                            }
-                        });
-
-                hideProgressBar();
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(getApplicationContext(), R.string.pls_enter_email, Toast.LENGTH_LONG).show();
+                return;
             }
+
+            if (!isValidEmail(email)) {
+                Toast.makeText(getApplicationContext(), R.string.pls_enter_right_email, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (password.length() < 6) {
+                Toast.makeText(getApplicationContext(), R.string.pass_length, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            showProgressBar();
+
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+
+                        if (task.isSuccessful()) {
+
+                            startActivity(intentMain);
+
+                        } else {
+
+                            Toast.makeText(getApplicationContext(), R.string.email_or_pass_not_right, Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    });
+
+            hideProgressBar();
         });
 
-        btnForgotPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ForgotPassActivity.class));
-            }
-        });
+        btnForgotPass.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ForgotPassActivity.class)));
 
-        btnCreateAcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
-            }
-        });
+        btnCreateAcc.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RegistrationActivity.class)));
     }
 
     //activity gets Google api result
@@ -169,19 +142,16 @@ public class LoginActivity extends BaseActivity {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            startActivity(intentMain);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Snackbar.make(findViewById(R.id.login_layout), R.string.auth_fail, Snackbar.LENGTH_SHORT).show();
-                        }
-
-
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        startActivity(intentMain);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Snackbar.make(findViewById(R.id.login_layout), R.string.auth_fail, Snackbar.LENGTH_SHORT).show();
                     }
+
+
                 });
 
         hideProgressBar();

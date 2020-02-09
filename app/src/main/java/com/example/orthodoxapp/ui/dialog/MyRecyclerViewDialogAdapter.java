@@ -1,5 +1,6 @@
 package com.example.orthodoxapp.ui.dialog;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter{
 
     private static final int VIEW_TYPE_ME = 10001;
     private static final int VIEW_TYPE_THEIR = 10002;
+
     private List<Message> itemMsg;
 
-    public MyRecyclerViewDialogAdapter(List<Message> itemMsg) {
+    private Context context;
+
+    public MyRecyclerViewDialogAdapter(List<Message> itemMsg, @NonNull Context context) {
         this.itemMsg = itemMsg;
+        this.context = context;
     }
 
     public void setData(List<Message> data){
@@ -54,7 +59,7 @@ public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        if (TextUtils.equals(itemMsg.get(position).getSender().getId(), FirebaseAuth.getInstance().getUid())) {
+        if (TextUtils.equals(itemMsg.get(position).getSenderUid(), FirebaseAuth.getInstance().getUid())) {
             configureMyChatViewHolder((ViewHolderMyDialog) holder, position);
         } else {
             configureTheirChatViewHolder((ViewHolderTheirDialog)holder, position);
@@ -64,7 +69,7 @@ public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter<RecyclerVi
     private void configureMyChatViewHolder(final ViewHolderMyDialog viewHolderMyDialog, int position) {
         Message msg = itemMsg.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("kk:mm   MM/dd/yyyy");
-        String date = sdf.format(msg.getMessageDate().getTime());
+        String date = sdf.format(msg.getMessageTime());
         viewHolderMyDialog.tvMsgTime.setText(date);
         viewHolderMyDialog.tvMsgBody.setText(msg.getTextMessage());
 
@@ -73,9 +78,9 @@ public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter<RecyclerVi
     private void configureTheirChatViewHolder(final ViewHolderTheirDialog viewHolderTheirDialog, int position) {
         Message msg = itemMsg.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("kk:mm   MM/dd/yyyy");
-        String date = sdf.format(msg.getMessageDate().getTime());
+        String date = sdf.format(msg.getMessageTime());
         viewHolderTheirDialog.tvMsgTime.setText(date);
-        viewHolderTheirDialog.tvFSName.setText(msg.getSender().getName());
+        //viewHolderTheirDialog.tvFSName.setText(msg.getSender());
         viewHolderTheirDialog.tvMsgBody.setText(msg.getTextMessage());
         //viewHolderTheirDialog.viewAva.setBackground(msg.getSender().getPhoto());
 
@@ -88,7 +93,7 @@ public class MyRecyclerViewDialogAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemViewType(int position) {
-        if (TextUtils.equals(itemMsg.get(position).getAddressee().getId(),
+        if (TextUtils.equals(itemMsg.get(position).getSenderUid(),
                 (FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
             return VIEW_TYPE_ME;
         } else {

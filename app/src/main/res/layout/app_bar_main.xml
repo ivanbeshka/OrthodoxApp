@@ -35,6 +35,8 @@
         android:background="@color/colorWhite"
         app:layout_anchorGravity="bottom"
         app:menu="@menu/main"
+        style="@style/Widget.Design.BottomNavigationView"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

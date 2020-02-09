@@ -1,23 +1,17 @@
 package com.example.orthodoxapp.ui.msgs;
 
-import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.orthodoxapp.MainActivity;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.Message;
 import com.example.orthodoxapp.databinding.ItemViewMsgBinding;
@@ -30,11 +24,9 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
         implements ItemClickListener {
 
     private List<Message> listMsg = new LinkedList<>();
-    private Context context;
     private Fragment fragment;
 
-    public MyRecyclerViewMsgAdapter(Context context, Fragment fragment) {
-        this.context = context;
+    MyRecyclerViewMsgAdapter(Fragment fragment) {
         this.fragment = fragment;
     }
 
@@ -69,11 +61,12 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
     @Override
     public void onItemClick(Message message) {
         if(fragment.getActivity() != null){
+            Log.d("dialog", "preinit");
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("msg", message);
             NavController navController = Navigation.findNavController(fragment.getActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.nav_dialog);
+            navController.navigate(R.id.nav_dialog, bundle);
         }
-
-
     }
 
     // stores and recycles views as they are scrolled off screen

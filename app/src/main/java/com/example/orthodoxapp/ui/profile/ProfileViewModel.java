@@ -14,15 +14,15 @@ public class ProfileViewModel extends ViewModel {
 
 
     public ProfileViewModel() {
-        User user = User.builder().name("ivan").status("online").build();
-
-        Post post = Post.builder().comments(8).likes(999)
-                .reposts(957).user(user)
-                .views(465).text("gbshfbgsdbfgbgbs").build();
-
-        for (int i = 0; i < 50; i++) {
-            posts.add(post);
-        }
+//        User user = User.builder().name("ivan").status("online").build();
+//
+//        Post post = Post.builder().comments(8).likes(999)
+//                .reposts(957).user(user)
+//                .views(465).text("gbshfbgsdbfgbgbs").build();
+//
+//        for (int i = 0; i < 50; i++) {
+//            posts.add(post);
+//        }
 
     }
 
