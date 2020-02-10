@@ -54,7 +54,7 @@
 
     <string name="map">Map</string>
 
-    <string name="map_key" translatable="false">AIzaSyBGJg4Q9fgfyRIB4n1TI-pO3nd0-wUnr-Y</string>
+    <string name="map_key" translatable="false"></string>
     <string name="logout_from_your_account">logout from your account</string>
 
 </resources>
