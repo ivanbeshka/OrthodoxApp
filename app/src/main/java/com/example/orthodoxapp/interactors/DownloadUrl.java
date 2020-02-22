@@ -1,4 +1,4 @@
-package com.example.orthodoxapp.googleApi;
+package com.example.orthodoxapp.interactors;
 
 import android.util.Log;
 
@@ -10,9 +10,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-class DownloadUrl {
+public class DownloadUrl {
 
-    String readUrl(String mUrl) throws IOException {
+    private static final String LOG = "DownloadUrl";
+
+    public String readUrl(String mUrl) throws IOException {
 
         String data = "";
         InputStream inputStream = null;
@@ -27,9 +29,9 @@ class DownloadUrl {
             //read tools
             inputStream = httpURLConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = new StringBuffer(); //with async task
 
-            String line = "";
+            String line;
 
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -39,7 +41,7 @@ class DownloadUrl {
             br.close();
 
         } catch (MalformedURLException e) {
-            Log.e("DownloadUrl", "readUrl" + e.getMessage());
+            Log.e(LOG, "readUrl " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -29,8 +29,6 @@ public class RegistrationActivity extends BaseActivity {
 
     ConstraintLayout root;
 
-
-    //TODO realisation
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

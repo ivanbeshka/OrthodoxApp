@@ -29,14 +29,17 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navv"
+        style="@style/Widget.Design.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorWhite"
+        android:elevation="4dp"
+        app:itemIconTint="@color/colorYellowBase"
+        app:itemTextColor="@color/colorBlackInputT"
         app:layout_anchorGravity="bottom"
-        app:menu="@menu/main"
-        style="@style/Widget.Design.BottomNavigationView"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
+        app:menu="@menu/main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

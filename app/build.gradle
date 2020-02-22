@@ -44,11 +44,9 @@ dependencies {
 
     //tests
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 
     //firebase
     implementation 'com.google.firebase:firebase-database:19.2.0'
@@ -61,6 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.3.1'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:4.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.10'

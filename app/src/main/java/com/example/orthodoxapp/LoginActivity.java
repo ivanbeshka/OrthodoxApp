@@ -146,6 +146,7 @@ public class LoginActivity extends BaseActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         startActivity(intentMain);
+                        finish();
                     } else {
                         // If sign in fails, display a message to the user.
                         Snackbar.make(findViewById(R.id.login_layout), R.string.auth_fail, Snackbar.LENGTH_SHORT).show();

@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="message"
             type="com.example.orthodoxapp.dataModel.Message" />
+
         <variable
             name="itemClickListener"
             type="com.example.orthodoxapp.ui.msgs.ItemClickListener" />
@@ -15,8 +17,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:onClick="@{() -> itemClickListener.onItemClick(message)}">
+        android:onClick="@{() -> itemClickListener.onItemClick(message)}"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/iv_addressee_avatar"
@@ -24,7 +26,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_avatar_svgrepo_com"/>
+            app:srcCompat="@drawable/ic_avatar_svgrepo_com" />
 
         <TextView
             android:id="@+id/tv_msg_addressee"

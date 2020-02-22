@@ -48,16 +48,6 @@ public class MainActivity extends BaseActivity{
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        initPlaceClient();
-
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if(destination.getId() == R.id.nav_dialog){
-                hideBotNav();
-            }else {
-                showBotNav();
-            }
-        });
-
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -72,6 +62,18 @@ public class MainActivity extends BaseActivity{
             Toast.makeText(getApplicationContext(), "Hi " + user.getDisplayName(), Toast.LENGTH_LONG).show();
             isAuthorize = true;
         }
+
+        initPlaceClient();
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if(destination.getId() == R.id.nav_dialog){
+                hideBotNav();
+            }else {
+                showBotNav();
+            }
+        });
+
+
     }
 
 

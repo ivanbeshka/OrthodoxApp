@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ffff00</color>
+    <color name="colorPrimaryDark">#FFD600</color>
+    <color name="colorAccent">#F44336</color>
     <color name="colorAccentForProfile">#EB4580</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorChatMsg">#BFE91E63</color>
     <color name="colorChatMsgTheir">#BF1EE9C0</color>
     <color name="colorBlack">#BF000000</color>
+    <color name="colorBlackInputT">#80000000</color>
     <color name="colorWhite0">#00FFFFFF</color>
-    <color name="colorYellowBase">#ffff00</color>
+    <color name="colorYellowBase">#FFD600</color>
     <color name="colorOrangeBase">#FF6D00</color>
 </resources>

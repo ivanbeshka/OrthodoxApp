@@ -22,38 +22,45 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.orthodoxapp.R;
-import com.example.orthodoxapp.googleApi.GetNearbyPlacesData;
+import com.example.orthodoxapp.dataModel.FindPlace;
+import com.example.orthodoxapp.interactors.GetNearbyPlacesData;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetNearbyPlacesData.AsyncResponse {
 
     private static final int RC_PERMISSION_LOCATION = 12001;
 
-    private final int SEARCH_RADIUS = 1000;
-    private final String START_WITH = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    private final int ZOOM = 15;
+    private final int ZOOM = 17;
 
     private GoogleMap mMap;
     private AutocompleteSupportFragment autocomplete;
     private SupportMapFragment mapFragment;
+
+    private GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(this);
+    private ArrayList<FindPlace> searchingPlaces;
 
     //save battery
     private Criteria criteria;
 
     private static LocationManager locationManager;
     private final Looper looper = null;
+
+    private CreateUrl createUrl;
 
     private ImageButton btnSearchLocation;
 
@@ -65,6 +72,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         initViews(root);
 
         initLocation();
+
+        createUrl = new CreateUrl(getActivity());
 
         btnSearchLocation.setOnClickListener(v -> {
 
@@ -78,15 +87,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         autocomplete.setPlaceFields(Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG));
         autocomplete.setCountry("RU");
 
-        // autocomplete.setTypeFilter(Place.Type.CHURCH);
+        // autocomplete.setTypeFilter(FindPlace.Type.CHURCH);
         autocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 //delete all markers
                 mMap.clear();
 
-                getNearbyChurches(String.valueOf(place.getLatLng().latitude),
-                        String.valueOf(place.getLatLng().longitude));
+                String url = createUrl.getNearbyChurchesUrl(place.getLatLng().latitude, place.getLatLng().longitude);
+                getNearbyPlacesData.execute(url);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), ZOOM));
             }
@@ -124,7 +133,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
     }
 
     @Override
@@ -133,37 +141,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap.setOnMarkerClickListener(this);
     }
 
-    private void getNearbyChurches(String lat, String lng) {
-        StringBuilder sb = new StringBuilder(START_WITH);
-        //add location in request
-        sb.append("location=" + lat + "," + lng);
-        //add search zone
-        sb.append("&radius=" + SEARCH_RADIUS);
-        //type
-        sb.append("&type=church");
-        //key
-        sb.append("&key=" + getResources().getString(R.string.google_api_key));
-
-        String url = sb.toString();
-
-        Object[] data = new Object[2];
-
-        data[0] = mMap;
-        data[1] = url;
-
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        getNearbyPlacesData.execute(data);
-    }
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            //init my latlng
+            //init my latLng
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
             mMap.clear();
 
-            getNearbyChurches(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            String url = createUrl.getNearbyChurchesUrl(location.getLatitude(), location.getLongitude());
+            getNearbyPlacesData.execute(url);
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
 
@@ -187,9 +175,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        FragmentFollowChurchDialog dialog = new FragmentFollowChurchDialog();
-        dialog.show(getFragmentManager(), "dialog follow show");
+
+        for (FindPlace FindPlace : searchingPlaces) {
+            if (FindPlace.getLat() == marker.getPosition().latitude && FindPlace.getLng() == marker.getPosition().longitude) {
+
+                //passing place id
+                FragmentFollowChurchDialog dialog = new FragmentFollowChurchDialog(FindPlace.getId());
+
+                dialog.show(getFragmentManager(), "dialog follow show");
+            }
+        }
+
         return false;
+    }
+
+    @Override
+    public void searchingChurches(ArrayList<FindPlace> FindPlaces) {
+        for (FindPlace FindPlace : FindPlaces) {
+            LatLng latLng = new LatLng(FindPlace.getLat(), FindPlace.getLng());
+            mMap.addMarker(new MarkerOptions().position(latLng)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        }
+
+        searchingPlaces = FindPlaces;
     }
 
     @Override
@@ -225,4 +233,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         return permissionStatusFine == PackageManager.PERMISSION_GRANTED;
     }
+
+
 }
