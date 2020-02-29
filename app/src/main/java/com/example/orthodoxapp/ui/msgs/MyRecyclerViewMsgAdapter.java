@@ -4,35 +4,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.orthodoxapp.R;
-import com.example.orthodoxapp.dataModel.Message;
+import com.example.orthodoxapp.dataModel.FindPlace;
 import com.example.orthodoxapp.databinding.ItemViewMsgBinding;
-
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewHolderMsg>
         implements ItemClickListener {
 
-    private List<Message> listMsg = new LinkedList<>();
+    private List<FindPlace> places = new LinkedList<>();
     private Fragment fragment;
 
     MyRecyclerViewMsgAdapter(Fragment fragment) {
         this.fragment = fragment;
     }
 
-    public void setData(List<Message> data) {
-        listMsg.clear();
-        listMsg.addAll(data);
+    public void setData(List<FindPlace> data) {
+        places.clear();
+        places.addAll(data);
     }
 
     @NonNull
@@ -48,22 +44,22 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderMsg holder, int position) {
-        holder.bind(listMsg.get(position));
+        holder.bind(places.get(position));
         //clickListener
         holder.bindingMsg.setItemClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        return listMsg.size();
+        return places.size();
     }
 
     @Override
-    public void onItemClick(Message message) {
+    public void onItemClick(FindPlace findPlace) {
         if(fragment.getActivity() != null){
             Log.d("dialog", "preinit");
             Bundle bundle = new Bundle();
-            bundle.putParcelable("msg", message);
+            //bundle.putParcelable("msg", );
             NavController navController = Navigation.findNavController(fragment.getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.nav_dialog, bundle);
         }
@@ -79,8 +75,8 @@ public class MyRecyclerViewMsgAdapter extends RecyclerView.Adapter<MyRecyclerVie
             this.bindingMsg = bindingMsg;
         }
 
-        void bind(Message message) {
-            bindingMsg.setMessage(message);
+        void bind(FindPlace findPlace) {
+            bindingMsg.setPlace(findPlace);
             bindingMsg.executePendingBindings();
         }
 

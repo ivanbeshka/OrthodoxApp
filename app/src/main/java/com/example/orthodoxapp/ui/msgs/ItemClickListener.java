@@ -1,8 +1,8 @@
 package com.example.orthodoxapp.ui.msgs;
 
-import com.example.orthodoxapp.dataModel.Message;
+import com.example.orthodoxapp.dataModel.FindPlace;
 
 public interface ItemClickListener {
 
-    void onItemClick(Message message);
+    void onItemClick(FindPlace findPlace);
 }

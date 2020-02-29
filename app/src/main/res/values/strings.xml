@@ -53,8 +53,6 @@
     <string name="please_wait">Registration. Please wait…</string>
 
     <string name="map">Map</string>
-
-    <string name="map_key" translatable="false"></string>
     <string name="logout_from_your_account">logout from your account</string>
 
 </resources>
