@@ -1,4 +1,4 @@
-package com.example.orthodoxapp.interactors;
+package com.example.orthodoxapp.interactors.utils;
 
 import android.util.Log;
 import java.io.BufferedReader;
@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DownloadDataFromUrl {
+public class DownloadUrl {
 
     private static final String LOG = "DownloadDataFromUrl";
 

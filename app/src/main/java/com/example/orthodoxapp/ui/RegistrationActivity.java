@@ -1,4 +1,4 @@
-package com.example.orthodoxapp;
+package com.example.orthodoxapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;

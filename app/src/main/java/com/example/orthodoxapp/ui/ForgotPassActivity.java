@@ -1,14 +1,13 @@
-package com.example.orthodoxapp;
+package com.example.orthodoxapp.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.example.orthodoxapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassActivity extends BaseActivity {

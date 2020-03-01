@@ -16,8 +16,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
-import com.example.orthodoxapp.repository.ParseJsonForNearbyChurches;
-import com.example.orthodoxapp.repository.ParseJsonForNearbyChurches.CallbackNearbyChurches;
+import com.example.orthodoxapp.interactors.nearbyPlaces.NearbyPlacesInteractor;
+import com.example.orthodoxapp.interactors.nearbyPlaces.tasks.GetNearbyPlacesDataTask.AsyncResponse;
+import com.example.orthodoxapp.ui.createUrl.CreateUrlForNearbyChurches;
 import com.example.orthodoxapp.ui.map.LocationTools.CallbackLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,9 +35,8 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 public class MapFragment extends Fragment implements OnMapReadyCallback,
-    GoogleMap.OnMarkerClickListener, CallbackNearbyChurches, CallbackLocation {
+    GoogleMap.OnMarkerClickListener, AsyncResponse, CallbackLocation {
 
   private static final int RC_PERMISSION_LOCATION = 12001;
 
@@ -44,7 +44,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
   private GoogleMap mMap;
   private AutocompleteSupportFragment autocomplete;
-  private SupportMapFragment mapFragment;
 
   private ArrayList<FindPlace> searchingPlaces;
 
@@ -96,7 +95,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     autocomplete = (AutocompleteSupportFragment) getChildFragmentManager()
         .findFragmentById(R.id.autocomplete);
 
-    mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+    SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        .findFragmentById(R.id.map);
+
     mapFragment.getMapAsync(this);
 
     btnSearchLocation = root.findViewById(R.id.btn_search_location);
@@ -112,6 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   @Override
   public boolean onMarkerClick(Marker marker) {
 
+    //TODO realisation with other fragment bottom on screen
     for (FindPlace findPlace : searchingPlaces) {
       if (findPlace.getLat() == marker.getPosition().latitude && findPlace.getLng() == marker
           .getPosition().longitude) {
@@ -138,7 +140,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
       } else {
         // permission denied
-        Toast.makeText(getActivity().getApplicationContext(), "Please, turn on location",
+        Toast.makeText(getContext(), "Please, turn on location",
             Toast.LENGTH_LONG).show();
 
         if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -164,17 +166,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   }
 
   @Override
-  public void nearbyChurches(ArrayList<FindPlace> churches) {
-    for (FindPlace place : churches) {
-      LatLng latLng = new LatLng(place.getLat(), place.getLng());
-      mMap.addMarker(new MarkerOptions().position(latLng)
-          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-    }
-
-    searchingPlaces = churches;
-  }
-
-  @Override
   public void locationChanged(Location location) {
     double lat = location.getLatitude();
     double lng = location.getLongitude();
@@ -184,10 +175,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private void refreshMap(double lat, double lng) {
     mMap.clear();
 
-    new ParseJsonForNearbyChurches(lat, lng,
-        MapFragment.this, getContext()).parse();
+    String url = new CreateUrlForNearbyChurches().createUrlForNearbyChurches(lat, lng, getContext());
+
+    NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
+    interactor.getFindPlaceList(url, this);
 
     mMap.moveCamera(CameraUpdateFactory
         .newLatLngZoom(new LatLng(lat, lng), ZOOM));
+  }
+
+  @Override
+  public void searchingChurches(ArrayList<FindPlace> findPlaces) {
+    for (FindPlace place : findPlaces) {
+      LatLng latLng = new LatLng(place.getLat(), place.getLng());
+      mMap.addMarker(new MarkerOptions().position(latLng)
+          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+    }
+
+    searchingPlaces = findPlaces;
   }
 }

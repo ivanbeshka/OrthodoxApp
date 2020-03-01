@@ -1,10 +1,9 @@
-package com.example.orthodoxapp;
+package com.example.orthodoxapp.ui;
 
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,15 +16,18 @@ public class MsgFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        MsgViewModel msgViewModel = ViewModelProviders.of(this).get(MsgViewModel.class);
+        MsgViewModel msgViewModel = ViewModelProviders.of(this).get(MsgViewModel.class);
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
 
         RecyclerView recyclerViewMsg = root.findViewById(R.id.recyclerViewMsg);
         recyclerViewMsg.setLayoutManager(new LinearLayoutManager(getContext()));
 
         MyRecyclerViewMsgAdapter adapter = new MyRecyclerViewMsgAdapter(this);
-       // adapter.setData();
-        recyclerViewMsg.setAdapter(adapter);
+
+        msgViewModel.getData().observe(this, findPlaces -> {
+            adapter.setData(findPlaces);
+            recyclerViewMsg.setAdapter(adapter);
+        });
 
         //decorations
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewMsg.getContext(),
