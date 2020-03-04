@@ -18,15 +18,16 @@ public class DownloadUrl {
         String data = "";
         InputStream inputStream = null;
         HttpURLConnection httpURLConnection = null;
-
         try {
             //open connection
             URL url = new URL(mUrl);
+            System.out.println("до");
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.connect();
 
             //read tools
             inputStream = httpURLConnection.getInputStream();
+            System.out.println("после");
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             StringBuffer sb = new StringBuffer(); //with async task
 

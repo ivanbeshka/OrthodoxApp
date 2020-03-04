@@ -28,13 +28,14 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
 
   private MutableLiveData<ArrayList<FindPlace>> data;
 
-  private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users")
+  private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users")
       .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("follows");
+
+  private FollowPlaceInteractor interactor = new FollowPlaceInteractor();
 
   public MsgViewModel(@NonNull Application application) {
     super(application);
   }
-
 
   public LiveData<ArrayList<FindPlace>> getData() {
     if (data == null) {
@@ -45,7 +46,7 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
   }
 
   private void setDataListener() {
-     databaseReference.addValueEventListener(new ValueEventListener() {
+    databaseReference.addValueEventListener(new ValueEventListener() {
 
       @RequiresApi(api = VERSION_CODES.N)
       @Override
@@ -56,8 +57,8 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
           Set<String> churchesIDs = map.keySet();
           Log.e(TAG, churchesIDs.toString());
           for (String churchId : churchesIDs) {
-            String url = new CreateUrlForFollowChurches().createUrlForFollowChurches(churchId, getApplication());
-            FollowPlaceInteractor interactor = new FollowPlaceInteractor();
+            String url = new CreateUrlForFollowChurches()
+                .createUrlForFollowChurches(churchId, getApplication());
             interactor.getFollowPlace(url, MsgViewModel.this);
           }
         }
@@ -71,10 +72,16 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
   }
 
   @Override
-  public void followPlace(@NonNull FindPlace findPlace) {
-    ArrayList<FindPlace> nowData = data.getValue();
-    assert nowData != null;
-    if (!nowData.contains(findPlace)) {
+  public void followPlace(FindPlace findPlace) {
+    ArrayList<FindPlace> nowData = new ArrayList<>();
+
+    if (data.getValue() != null) {
+      nowData = data.getValue();
+      if (!nowData.contains(findPlace)) {
+        nowData.add(findPlace);
+        data.setValue(nowData);
+      }
+    } else {
       nowData.add(findPlace);
       data.setValue(nowData);
     }
