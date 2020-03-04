@@ -1,29 +1,25 @@
 package com.example.orthodoxapp.ui.map;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
-import com.example.orthodoxapp.interactors.GetNearbyPlacesData;
+import com.example.orthodoxapp.interactors.nearbyPlaces.NearbyPlacesInteractor;
+import com.example.orthodoxapp.interactors.nearbyPlaces.tasks.GetNearbyPlacesDataTask.AsyncResponse;
+import com.example.orthodoxapp.ui.createUrl.CreateUrlForNearbyChurches;
+import com.example.orthodoxapp.ui.map.LocationTools.CallbackLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,203 +32,166 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
+public class MapFragment extends Fragment implements OnMapReadyCallback,
+    GoogleMap.OnMarkerClickListener, AsyncResponse, CallbackLocation {
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GetNearbyPlacesData.AsyncResponse {
+  private static final int RC_PERMISSION_LOCATION = 12001;
 
-    private static final int RC_PERMISSION_LOCATION = 12001;
+  private final int ZOOM = 17;
 
-    private final int ZOOM = 17;
+  private GoogleMap mMap;
+  private AutocompleteSupportFragment autocomplete;
 
-    private GoogleMap mMap;
-    private AutocompleteSupportFragment autocomplete;
-    private SupportMapFragment mapFragment;
+  private ArrayList<FindPlace> searchingPlaces;
 
-    private GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(this);
-    private ArrayList<FindPlace> searchingPlaces;
+  private LocationTools locationTools;
 
-    //save battery
-    private Criteria criteria;
+  private ImageButton btnSearchLocation;
 
-    private static LocationManager locationManager;
-    private final Looper looper = null;
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.fragment_map, container, false);
 
-    private CreateUrl createUrl;
+    locationTools = new LocationTools(MapFragment.this, getContext());
+    locationTools.initLocation();
 
-    private ImageButton btnSearchLocation;
+    initViews(root);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+    btnSearchLocation.setOnClickListener(v -> {
 
-        initViews(root);
+      if (checkPermission()) {
+        locationTools.requestSingleUpdate();
+      }
+    });
 
-        initLocation();
+    autocomplete.setPlaceFields(Arrays
+        .asList(Place.Field.ADDRESS, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS,
+            Place.Field.LAT_LNG));
+    autocomplete.setCountry("RU");
 
-        createUrl = new CreateUrl(getActivity());
+    autocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+      @Override
+      public void onPlaceSelected(@NonNull Place place) {
 
-        btnSearchLocation.setOnClickListener(v -> {
+        double lat = place.getLatLng().latitude;
+        double lng = place.getLatLng().longitude;
+        refreshMap(lat, lng);
+      }
 
-            if (checkPermission()) {
-                locationManager.requestSingleUpdate(criteria, locationListener, looper);
+      @Override
+      public void onError(@NonNull Status status) {
 
-            }
+      }
+    });
 
-        });
+    return root;
+  }
 
-        autocomplete.setPlaceFields(Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG));
-        autocomplete.setCountry("RU");
+  private void initViews(View root) {
+    autocomplete = (AutocompleteSupportFragment) getChildFragmentManager()
+        .findFragmentById(R.id.autocomplete);
 
-        // autocomplete.setTypeFilter(FindPlace.Type.CHURCH);
-        autocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                //delete all markers
-                mMap.clear();
+    SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        .findFragmentById(R.id.map);
 
-                String url = createUrl.getNearbyChurchesUrl(place.getLatLng().latitude, place.getLatLng().longitude);
-                getNearbyPlacesData.execute(url);
+    mapFragment.getMapAsync(this);
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), ZOOM));
-            }
+    btnSearchLocation = root.findViewById(R.id.btn_search_location);
 
-            @Override
-            public void onError(@NonNull Status status) {
+  }
 
-            }
-        });
+  @Override
+  public void onMapReady(GoogleMap googleMap) {
+    mMap = googleMap;
+    mMap.setOnMarkerClickListener(this);
+  }
 
+  @Override
+  public boolean onMarkerClick(Marker marker) {
 
-        return root;
+    //TODO realisation with other fragment bottom on screen
+    for (FindPlace findPlace : searchingPlaces) {
+      if (findPlace.getLat() == marker.getPosition().latitude && findPlace.getLng() == marker
+          .getPosition().longitude) {
+
+        //passing place id
+        FragmentFollowChurchDialog dialog = new FragmentFollowChurchDialog(findPlace.getId());
+
+        dialog.show(getFragmentManager(), "dialog follow show");
+      }
     }
 
-    private void initViews(View root) {
-        autocomplete = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete);
+    return false;
+  }
 
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        btnSearchLocation = root.findViewById(R.id.btn_search_location);
+    if (requestCode == RC_PERMISSION_LOCATION) {
 
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        // permission granted
+
+      } else {
+        // permission denied
+        Toast.makeText(getContext(), "Please, turn on location",
+            Toast.LENGTH_LONG).show();
+
+        if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+          Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+          startActivity(intent);
+        }
+
+      }
+    }
+  }
+
+  //Permissions methods
+  private boolean checkPermission() {
+    int permissionStatusFine = ContextCompat
+        .checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+
+    if (permissionStatusFine != PackageManager.PERMISSION_GRANTED) {
+      requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+          RC_PERMISSION_LOCATION);
     }
 
-    private void initLocation() {
+    return permissionStatusFine == PackageManager.PERMISSION_GRANTED;
+  }
 
-        criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setSpeedRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
-        criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
+  @Override
+  public void locationChanged(Location location) {
+    double lat = location.getLatitude();
+    double lng = location.getLongitude();
+    refreshMap(lat, lng);
+  }
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+  private void refreshMap(double lat, double lng) {
+    mMap.clear();
+
+    String url = new CreateUrlForNearbyChurches().createUrlForNearbyChurches(lat, lng, getContext());
+
+    NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
+    interactor.getFindPlaceList(url, this);
+
+    mMap.moveCamera(CameraUpdateFactory
+        .newLatLngZoom(new LatLng(lat, lng), ZOOM));
+  }
+
+  @Override
+  public void searchingChurches(ArrayList<FindPlace> findPlaces) {
+    for (FindPlace place : findPlaces) {
+      LatLng latLng = new LatLng(place.getLat(), place.getLng());
+      mMap.addMarker(new MarkerOptions().position(latLng)
+          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setOnMarkerClickListener(this);
-    }
-
-
-    private final LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            //init my latLng
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-            mMap.clear();
-
-            String url = createUrl.getNearbyChurchesUrl(location.getLatitude(), location.getLongitude());
-            getNearbyPlacesData.execute(url);
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
-
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-
-        for (FindPlace FindPlace : searchingPlaces) {
-            if (FindPlace.getLat() == marker.getPosition().latitude && FindPlace.getLng() == marker.getPosition().longitude) {
-
-                //passing place id
-                FragmentFollowChurchDialog dialog = new FragmentFollowChurchDialog(FindPlace.getId());
-
-                dialog.show(getFragmentManager(), "dialog follow show");
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public void searchingChurches(ArrayList<FindPlace> FindPlaces) {
-        for (FindPlace FindPlace : FindPlaces) {
-            LatLng latLng = new LatLng(FindPlace.getLat(), FindPlace.getLng());
-            mMap.addMarker(new MarkerOptions().position(latLng)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        }
-
-        searchingPlaces = FindPlaces;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == RC_PERMISSION_LOCATION) {
-
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // permission granted
-
-            } else {
-                // permission denied
-                Toast.makeText(getActivity().getApplicationContext(), "Please, turn on location", Toast.LENGTH_LONG).show();
-
-                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
-
-            }
-        }
-    }
-
-    //Permissions methods
-    private boolean checkPermission() {
-        int permissionStatusFine = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-
-        if (permissionStatusFine != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    RC_PERMISSION_LOCATION);
-        }
-
-        return permissionStatusFine == PackageManager.PERMISSION_GRANTED;
-    }
-
-
+    searchingPlaces = findPlaces;
+  }
 }

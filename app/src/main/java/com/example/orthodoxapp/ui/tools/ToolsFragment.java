@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.example.orthodoxapp.LoginActivity;
 import com.example.orthodoxapp.R;
+import com.example.orthodoxapp.ui.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ToolsFragment extends Fragment {

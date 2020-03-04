@@ -1,21 +1,14 @@
-package com.example.orthodoxapp.ui.map;
+package com.example.orthodoxapp.ui.createUrl;
 
-import android.app.Activity;
-
+import android.content.Context;
 import com.example.orthodoxapp.R;
 
-public class CreateUrl {
+public class CreateUrlForNearbyChurches {
 
     private final int SEARCH_RADIUS = 1000;
     private final String START_WITH = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 
-    private Activity activity;
-
-    public CreateUrl(Activity activity) {
-        this.activity = activity;
-    }
-
-    public String getNearbyChurchesUrl(double lat, double lng) {
+    public String createUrlForNearbyChurches(double lat, double lng, Context context){
         StringBuilder sb = new StringBuilder(START_WITH);
         //add location in request
         sb.append("location=" + lat + "," + lng);
@@ -24,9 +17,8 @@ public class CreateUrl {
         //type
         sb.append("&type=church");
         //key
-        sb.append("&key=" + activity.getResources().getString(R.string.google_api_key));
+        sb.append("&key=" + context.getString(R.string.google_api_key));
 
         return sb.toString();
     }
-
 }
