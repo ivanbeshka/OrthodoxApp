@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends BaseActivity{
 
-
-
     private AppBarConfiguration mAppBarConfiguration;
     private BottomNavigationView bottomNavigationView;
     private NavController navController;
@@ -28,6 +26,8 @@ public class MainActivity extends BaseActivity{
     private FirebaseAuth.AuthStateListener authStateListener;
 
     public static boolean isAuthorize = false;
+
+    public static PlacesClient placesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,11 @@ public class MainActivity extends BaseActivity{
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if(destination.getId() == R.id.nav_dialog){
                 hideBotNav();
+                getSupportActionBar().show();
             }else {
+                getSupportActionBar().hide();
                 showBotNav();
+
             }
         });
 
@@ -80,7 +83,7 @@ public class MainActivity extends BaseActivity{
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), getString(R.string.google_api_key));
         }
-        PlacesClient placesClient = Places.createClient(this);
+        placesClient = Places.createClient(this);
     }
 
     public void showBotNav() {

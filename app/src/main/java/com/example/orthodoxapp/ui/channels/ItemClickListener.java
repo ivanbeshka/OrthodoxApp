@@ -1,4 +1,4 @@
-package com.example.orthodoxapp.ui.msgs;
+package com.example.orthodoxapp.ui.channels;
 
 import com.example.orthodoxapp.dataModel.FindPlace;
 

@@ -2,71 +2,97 @@ package com.example.orthodoxapp.ui.dialog;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.example.orthodoxapp.R;
-import com.example.orthodoxapp.dataModel.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DialogFragment extends Fragment {
 
-    private DialogViewModel mViewModel;
-    private MyRecyclerViewDialogAdapter dialogAdapter;
-    private Message mMessageFromBundle;
+  private DialogViewModel mViewModel;
+  private MyRecyclerViewDialogAdapter dialogAdapter;
+  private String placeId;
 
-    private FirebaseUser firebaseUser;
-    private DatabaseReference database;
+  private FirebaseUser firebaseUser;
+  private DatabaseReference database;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dialog, container, false);
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
+  }
 
-        ImageButton btnSendMsg = root.findViewById(R.id.btn_send_msg);
-        EditText etMsg = root.findViewById(R.id.et_my_msg);
+  @Override
+  public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    inflater.inflate(R.menu.menu_channel, menu);
+    super.onCreateOptionsMenu(menu, inflater);
+  }
 
-        assert getArguments() != null;
-        mMessageFromBundle = getArguments().getParcelable("msg");
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    int id = item.getItemId();
 
-        initializeDialog();
-
-
-
-        btnSendMsg.setOnClickListener(v -> {
-            String msg = etMsg.getText().toString();
-//            FirebaseDatabase.getInstance().getReference().push()
-//                    .setValue(new Message())
-            Message senderMsg = Message.builder()
-                    .senderUid(firebaseUser.getUid()).addresseeUid(mMessageFromBundle.getAddresseeUid())
-                    .textMessage(msg).build();
-
-            database.push().setValue(senderMsg);
-
-
-            //clean
-            etMsg.setText("");
-        });
-
-        return root;
+    switch (id) {
+      case R.id.menu_item_unsubscribe:
+        unsubscribe();
     }
+    return super.onOptionsItemSelected(item);
+  }
 
-    private void initializeDialog() {
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert firebaseUser != null;
-        database = FirebaseDatabase.getInstance()
-                .getReference("users").child(firebaseUser.getUid()).child("dialogs");
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.fragment_dialog, container, false);
 
-    }
+    ImageButton btnSendMsg = root.findViewById(R.id.btn_send_msg);
+    EditText etMsg = root.findViewById(R.id.et_my_msg);
+
+    assert getArguments() != null;
+    placeId = getArguments().getString("placeId");
+
+    initializeDialog();
+
+    return root;
+  }
+
+  private void unsubscribe() {
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+        .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        .child("follows").child(placeId);
+
+    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        dataSnapshot.getRef().removeValue();
+        Toast.makeText(getContext(), "unsubscribe successful", Toast.LENGTH_LONG).show();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  private void initializeDialog() {
+
+  }
+
 }

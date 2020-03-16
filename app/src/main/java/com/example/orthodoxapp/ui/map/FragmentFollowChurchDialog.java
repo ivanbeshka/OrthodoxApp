@@ -4,15 +4,12 @@ package com.example.orthodoxapp.ui.map;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import org.jetbrains.annotations.NotNull;
 
 
@@ -47,4 +44,5 @@ public class FragmentFollowChurchDialog extends DialogFragment {
 
         return builder.create();
     }
+
 }

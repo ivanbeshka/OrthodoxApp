@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -50,6 +51,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private LocationTools locationTools;
 
   private ImageButton btnSearchLocation;
+  private SeekBar seekBarRadius;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +103,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     mapFragment.getMapAsync(this);
 
     btnSearchLocation = root.findViewById(R.id.btn_search_location);
+    seekBarRadius = root.findViewById(R.id.seek_bar);
 
   }
 
@@ -121,7 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         //passing place id
         FragmentFollowChurchDialog dialog = new FragmentFollowChurchDialog(findPlace.getId());
 
-        dialog.show(getFragmentManager(), "dialog follow show");
+        dialog.show(getParentFragmentManager(), "dialog follow show");
       }
     }
 
@@ -175,7 +178,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private void refreshMap(double lat, double lng) {
     mMap.clear();
 
-    String url = new CreateUrlForNearbyChurches().createUrlForNearbyChurches(lat, lng, getContext());
+    int radius = seekBarRadius.getProgress();
+    if (radius == 0) radius = 1;
+    radius *= 1000;
+
+    String url = new CreateUrlForNearbyChurches()
+        .createUrlForNearbyChurches(lat, lng, getContext(), radius);
 
     NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
     interactor.getFindPlaceList(url, this);
