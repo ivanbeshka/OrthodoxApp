@@ -1,7 +1,6 @@
 package com.example.orthodoxapp.ui.channels;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -28,11 +27,9 @@ public class MyRecyclerViewMsgAdapter extends
   }
 
   public void setData(List<FindPlace> data) {
-    Log.d("pre setData", places.toString());
     places.clear();
     notifyDataSetChanged();
     places.addAll(data);
-    Log.d("post setData", places.toString());
   }
 
   @NonNull
@@ -62,7 +59,7 @@ public class MyRecyclerViewMsgAdapter extends
   public void onItemClick(FindPlace findPlace) {
     if (fragment.getActivity() != null) {
       Bundle bundle = new Bundle();
-      bundle.putString("placeId", findPlace.getId());
+      bundle.putParcelable("place", findPlace);
       NavController navController = Navigation
           .findNavController(fragment.getActivity(), R.id.nav_host_fragment);
       navController.navigate(R.id.nav_dialog, bundle);

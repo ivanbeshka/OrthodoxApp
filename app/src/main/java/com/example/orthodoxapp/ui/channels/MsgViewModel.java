@@ -8,8 +8,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
 import com.example.orthodoxapp.interactors.followPlaces.FollowPlaceInteractor;
@@ -37,7 +35,7 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
 
   private final String TAG = "MsgViewModel";
 
-  private MutableLiveData<ArrayList<FindPlace>> data;
+  private ArrayList<FindPlace> data = new ArrayList<>();
 
   private final DatabaseReference databaseReference = FirebaseDatabase.getInstance()
       .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -47,14 +45,10 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
 
   public MsgViewModel(@NonNull Application application) {
     super(application);
+    setDataListener();
   }
 
-  public LiveData<ArrayList<FindPlace>> getData() {
-    if (data == null) {
-      data = new MutableLiveData<>();
-      setDataListener();
-    }
-
+  public ArrayList<FindPlace> getData() {
     return data;
   }
 
@@ -86,7 +80,6 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
 
     String placeId = findPlace.getId();
 
-
 // Specify fields. Requests for photos must always have the PHOTO_METADATAS field.
     List<Field> fields = Arrays.asList(Place.Field.PHOTO_METADATAS);
 
@@ -110,7 +103,6 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
           findPlace.setPhoto(bitmap);
 
 
-
         }).addOnFailureListener((exception) -> {
           if (exception instanceof ApiException) {
             ApiException apiException = (ApiException) exception;
@@ -119,23 +111,14 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
             Log.e(TAG, "Place not found: " + exception.getMessage());
           }
         });
-      }else {
+      } else { //if no icon
         findPlace.setPhoto(BitmapFactory.decodeResource(getApplication().getResources(), R.raw.icon_church));
       }
 
       //this is main////////////////////
-      ArrayList<FindPlace> nowData = new ArrayList<>();
-      if (data.getValue() != null) {
-        nowData = data.getValue();
-        if (!nowData.contains(findPlace)) {
-          nowData.add(findPlace);
-          data.setValue(nowData);
-          Log.d(TAG, "Find place data" + data.getValue().toString());
-        }
-      } else {
-        nowData.add(findPlace);
-        data.setValue(nowData);
-        Log.d(TAG, "Find place data" + data.getValue().toString());
+
+      if (!data.contains(findPlace)){
+        data.add(findPlace);
       }
       //////////////////////////////////
 

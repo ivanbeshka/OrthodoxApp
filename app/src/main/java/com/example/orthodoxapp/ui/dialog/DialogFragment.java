@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.orthodoxapp.R;
+import com.example.orthodoxapp.dataModel.FindPlace;
+import com.example.orthodoxapp.ui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +28,7 @@ public class DialogFragment extends Fragment {
 
   private DialogViewModel mViewModel;
   private MyRecyclerViewDialogAdapter dialogAdapter;
-  private String placeId;
+  private FindPlace findPlace;
 
   private FirebaseUser firebaseUser;
   private DatabaseReference database;
@@ -61,11 +63,13 @@ public class DialogFragment extends Fragment {
       @Nullable Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_dialog, container, false);
 
+    assert getArguments() != null;
+    findPlace = getArguments().getParcelable("place");
+
+    ((MainActivity) getActivity()).setToolbarTitle(findPlace.getName());
+
     ImageButton btnSendMsg = root.findViewById(R.id.btn_send_msg);
     EditText etMsg = root.findViewById(R.id.et_my_msg);
-
-    assert getArguments() != null;
-    placeId = getArguments().getString("placeId");
 
     initializeDialog();
 
@@ -75,7 +79,7 @@ public class DialogFragment extends Fragment {
   private void unsubscribe() {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance()
         .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-        .child("follows").child(placeId);
+        .child("follows").child(findPlace.getId());
 
     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
@@ -90,7 +94,6 @@ public class DialogFragment extends Fragment {
       }
     });
   }
-
   private void initializeDialog() {
 
   }

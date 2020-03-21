@@ -35,11 +35,7 @@ public class FragmentFollowChurchDialog extends DialogFragment {
                             .getReference("users").child(uid).child("follows").child(churchID);
                     databaseReference.setValue(true);
 
-
                     Toast.makeText(getContext(), "Follow successful", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-
                 });
 
         return builder.create();

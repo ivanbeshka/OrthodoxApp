@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +46,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
   private GoogleMap mMap;
   private AutocompleteSupportFragment autocomplete;
+  private CameraPosition cameraUpdatePosition;
 
   private ArrayList<FindPlace> searchingPlaces;
 
@@ -111,6 +113,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
     mMap.setOnMarkerClickListener(this);
+
+    //if save map
+    MapStateManager mapStateManager = new MapStateManager(getContext());
+    CameraPosition position = mapStateManager.getSavedCameraPosition();
+    if (position != null){
+      mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+    }
   }
 
   @Override
@@ -179,7 +188,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     mMap.clear();
 
     int radius = seekBarRadius.getProgress();
-    if (radius == 0) radius = 1;
+    if (radius == 0) {
+      radius = 1;
+    }
     radius *= 1000;
 
     String url = new CreateUrlForNearbyChurches()
@@ -201,5 +212,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     searchingPlaces = findPlaces;
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+
+    //save map position
+    MapStateManager mapStateManager = new MapStateManager(getContext());
+    mapStateManager.saveMapState(mMap);
   }
 }
