@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.orthodoxapp.R;
+import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity {
       }
     };
 
-    final FirebaseUser user = firebaseAuth.getCurrentUser();
+    final FirebaseUser user = FirebaseHelper.getFirebaseUser();
     if (user != null) {
       Toast.makeText(getApplicationContext(), "Hi " + user.getDisplayName(), Toast.LENGTH_LONG)
           .show();
@@ -67,12 +68,6 @@ public class MainActivity extends BaseActivity {
     initPlaceClient();
 
     navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-//      if (destination.getId() == R.id.nav_msgs) {
-//        MsgFragment msgFragment = (MsgFragment) getSupportFragmentManager()
-//            .findFragmentById(R.id.channels_refresh_layout);
-//        msgFragment.refreshContent();
-//
-//      }
       if (destination.getId() == R.id.nav_dialog) {
         hideBotNav();
         getSupportActionBar().show();

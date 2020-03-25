@@ -46,7 +46,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
   private GoogleMap mMap;
   private AutocompleteSupportFragment autocomplete;
-  private CameraPosition cameraUpdatePosition;
 
   private ArrayList<FindPlace> searchingPlaces;
 

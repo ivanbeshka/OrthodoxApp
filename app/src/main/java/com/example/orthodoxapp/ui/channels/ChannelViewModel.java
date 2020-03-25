@@ -8,8 +8,11 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
+import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
 import com.example.orthodoxapp.interactors.followPlaces.FollowPlaceInteractor;
 import com.example.orthodoxapp.interactors.followPlaces.tasks.GetFollowPlaceDataTask.AsyncResponse;
 import com.example.orthodoxapp.ui.createUrl.CreateUrlForFollowChurches;
@@ -19,11 +22,9 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.Place.Field;
 import com.google.android.libraries.places.api.net.FetchPhotoRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,24 +32,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
+public class ChannelViewModel extends AndroidViewModel implements AsyncResponse {
 
-  private final String TAG = "MsgViewModel";
+  private final String TAG = "ChannelViewModel";
 
-  private ArrayList<FindPlace> data = new ArrayList<>();
+  private MutableLiveData<ArrayList<FindPlace>> data;
 
-  private final DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-      .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-      .child("follows");
+  private final DatabaseReference databaseReference = FirebaseHelper.getUserFollowsPath();
 
   private FollowPlaceInteractor interactor = new FollowPlaceInteractor();
 
-  public MsgViewModel(@NonNull Application application) {
+  public ChannelViewModel(@NonNull Application application) {
     super(application);
-    setDataListener();
   }
 
-  public ArrayList<FindPlace> getData() {
+  public LiveData<ArrayList<FindPlace>> getData() {
+    if (data == null) {
+      data = new MutableLiveData<>();
+      setDataListener();
+    }
     return data;
   }
 
@@ -59,18 +61,17 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
           Map<String, Boolean> map = (Map) dataSnapshot.getValue();
-          Set<String> churchesIDs = map.keySet();
-          for (String churchId : churchesIDs) {
+          Set<String> churchesIds = map.keySet();
+          for (String churchId : churchesIds) {
             String url = new CreateUrlForFollowChurches()
                 .createUrlForFollowChurches(churchId, getApplication());
-            interactor.getFollowPlace(url, MsgViewModel.this);
+            interactor.getFollowPlace(url, ChannelViewModel.this);
           }
         }
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError databaseError) {
-
       }
     });
   }
@@ -112,13 +113,22 @@ public class MsgViewModel extends AndroidViewModel implements AsyncResponse {
           }
         });
       } else { //if no icon
-        findPlace.setPhoto(BitmapFactory.decodeResource(getApplication().getResources(), R.raw.icon_church));
+        findPlace.setPhoto(
+            BitmapFactory.decodeResource(getApplication().getResources(), R.raw.icon_church));
       }
 
       //this is main////////////////////
+      ArrayList<FindPlace> nowData = new ArrayList<>();
 
-      if (!data.contains(findPlace)){
-        data.add(findPlace);
+      if (data.getValue() != null) {
+        nowData = data.getValue();
+        if (!nowData.contains(findPlace)) {
+          nowData.add(findPlace);
+          data.setValue(nowData);
+        }
+      } else {
+        nowData.add(findPlace);
+        data.setValue(nowData);
       }
       //////////////////////////////////
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:clipToPadding="false">
 
     <TextView
       android:id="@+id/tv_channel_message_body"
@@ -14,7 +16,7 @@
       android:layout_alignParentLeft="true"
       android:padding="10dp"
       android:background="@drawable/their_msg_shape"
-      android:text="@string/long_text"
+      android:text="@{message.textMessage}"
       android:textColor="@color/colorBlack"
       android:textSize="18sp"
       app:layout_constraintBottom_toTopOf="@+id/tv_channel_msg_time"
@@ -27,7 +29,15 @@
       android:id="@+id/tv_channel_msg_time"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="12:30   01/02/2018"
+      android:text="@{message.getMessageDate}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <data>
+    <variable
+      name="message"
+      type="com.example.orthodoxapp.dataModel.Message" />
+
+  </data>
+</layout>

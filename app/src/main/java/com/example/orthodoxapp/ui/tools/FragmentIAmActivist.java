@@ -7,9 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.orthodoxapp.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class FragmentIAmActivist extends DialogFragment {
 
@@ -18,8 +17,7 @@ public class FragmentIAmActivist extends DialogFragment {
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid).child("activist");
+    DatabaseReference reference = FirebaseHelper.getUserActivistPath();
 
     alertDialog.setMessage(R.string.agreement)
         .setPositiveButton("agree", (dialog, which) -> {

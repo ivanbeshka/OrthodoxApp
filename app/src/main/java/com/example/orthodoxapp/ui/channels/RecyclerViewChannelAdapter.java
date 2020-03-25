@@ -15,21 +15,16 @@ import com.example.orthodoxapp.databinding.ItemChannelBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRecyclerViewMsgAdapter extends
-    RecyclerView.Adapter<MyRecyclerViewMsgAdapter.ViewHolderMsg>
+public class RecyclerViewChannelAdapter extends
+    RecyclerView.Adapter<RecyclerViewChannelAdapter.ViewHolderMsg>
     implements ItemClickListener {
 
-  private List<FindPlace> places = new ArrayList<>();
+  private List<FindPlace> places;
   private Fragment fragment;
 
-  MyRecyclerViewMsgAdapter(Fragment fragment) {
+  RecyclerViewChannelAdapter(Fragment fragment, ArrayList<FindPlace> places) {
     this.fragment = fragment;
-  }
-
-  public void setData(List<FindPlace> data) {
-    places.clear();
-    notifyDataSetChanged();
-    places.addAll(data);
+    this.places = places;
   }
 
   @NonNull

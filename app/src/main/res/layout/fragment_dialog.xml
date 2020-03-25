@@ -6,7 +6,7 @@
   android:padding="4dp">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerViewDialog"
+    android:id="@+id/recycler_view_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
@@ -16,6 +16,7 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:minHeight="48dp"
+    android:visibility="gone"
     android:orientation="horizontal"
     android:layout_gravity="bottom|center_horizontal"
     android:elevation="8dp">
@@ -26,6 +27,7 @@
       android:layout_height="48dp"
       android:layout_marginTop="4dp"
       android:src="@drawable/ic_calendar_plus"
+      android:tint="@color/colorWhite"
       android:background="@drawable/btn_send_shape" />
 
     <EditText
@@ -36,9 +38,9 @@
       android:layout_marginLeft="16dp"
       android:layout_marginRight="16dp"
       android:layout_weight="1"
+      android:maxLines="4"
       android:background="@android:color/transparent"
-      android:hint="Enter message"
-      android:maxLines="6" />
+      android:hint="@string/enter_message"/>
 
     <ImageButton
       android:id="@+id/btn_send_msg"
