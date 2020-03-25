@@ -8,39 +8,40 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public ProgressBar mProgressBar;
+  public ProgressBar mProgressBar;
 
-    public void setProgressBar(int resId) {
-        mProgressBar = findViewById(resId);
-    }
+  public void setProgressBar(int resId) {
+    mProgressBar = findViewById(resId);
+  }
 
-    public void showProgressBar() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
+  public void showProgressBar() {
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(View.VISIBLE);
     }
+  }
 
-    public void hideProgressBar() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
+  public void hideProgressBar() {
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(View.INVISIBLE);
     }
+  }
 
-    public void hideKeyboard(View view) {
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+  public void hideKeyboard(View view) {
+    final InputMethodManager imm = (InputMethodManager) getSystemService(
+        Context.INPUT_METHOD_SERVICE);
+    if (imm != null) {
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+  }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        hideProgressBar();
-    }
+  @Override
+  public void onStop() {
+    super.onStop();
+    hideProgressBar();
+  }
 
-    public boolean isValidEmail(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
-    }
+  public boolean isValidEmail(String email) {
+    String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+    return email.matches(regex);
+  }
 }

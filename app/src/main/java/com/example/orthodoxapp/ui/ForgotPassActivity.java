@@ -12,56 +12,57 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassActivity extends BaseActivity {
 
-    private EditText etForgotEmail;
-    private Button btnSendPass;
-    private FirebaseAuth firebaseAuth;
-    private ConstraintLayout root;
+  private EditText etForgotEmail;
+  private Button btnSendPass;
+  private FirebaseAuth firebaseAuth;
+  private ConstraintLayout root;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_forgot_password);
 
-        initViews();
+    initViews();
 
-        firebaseAuth = FirebaseAuth.getInstance();
+    firebaseAuth = FirebaseAuth.getInstance();
 
-        btnSendPass.setOnClickListener(v -> {
+    btnSendPass.setOnClickListener(v -> {
 
-            hideKeyboard(root);
+      hideKeyboard(root);
 
-            String email = etForgotEmail.getText().toString();
+      String email = etForgotEmail.getText().toString();
 
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(getApplicationContext(), R.string.pls_enter_email, Toast.LENGTH_LONG).show();
-                return;
-            }
+      if (TextUtils.isEmpty(email)) {
+        Toast.makeText(getApplicationContext(), R.string.pls_enter_email, Toast.LENGTH_LONG).show();
+        return;
+      }
 
-            if (!isValidEmail(email)) {
-                Toast.makeText(getApplicationContext(), R.string.pls_enter_right_email, Toast.LENGTH_LONG).show();
-                return;
-            }
+      if (!isValidEmail(email)) {
+        Toast.makeText(getApplicationContext(), R.string.pls_enter_right_email, Toast.LENGTH_LONG)
+            .show();
+        return;
+      }
 
-            showProgressBar();
+      showProgressBar();
 
-            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), R.string.rest_right,Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), R.string.error_send_pass,Toast.LENGTH_SHORT).show();
-                }
+      firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+        if (task.isSuccessful()) {
+          Toast.makeText(getApplicationContext(), R.string.rest_right, Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getApplicationContext(), R.string.error_send_pass, Toast.LENGTH_SHORT)
+              .show();
+        }
 
-                hideProgressBar();
-            });
+        hideProgressBar();
+      });
 
-        });
-    }
+    });
+  }
 
-    private void initViews() {
-        etForgotEmail = findViewById(R.id.etForgotEmail);
-        btnSendPass = findViewById(R.id.btnPassGiveMe);
-        root = findViewById(R.id.forgotPassLayout);
-        setProgressBar(R.id.progressBarForgot);
-    }
+  private void initViews() {
+    etForgotEmail = findViewById(R.id.etForgotEmail);
+    btnSendPass = findViewById(R.id.btnPassGiveMe);
+    root = findViewById(R.id.forgotPassLayout);
+    setProgressBar(R.id.progressBarForgot);
+  }
 }

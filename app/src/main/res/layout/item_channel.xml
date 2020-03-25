@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:bind="http://schemas.android.com/tools">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:onClick="@{() -> itemClickListener.onItemClick(place)}">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/iv_place_image"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      bind:imageBitmap="@{place.photo}"
+      android:scaleType="centerCrop"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+      android:id="@+id/tv_place_name"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:singleLine="true"
+      android:text="@{place.name}"
+      android:textSize="18sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@+id/iv_place_image"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/textView2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginStart="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:singleLine="true"
+      android:text="@{place.street}"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@+id/iv_place_image"
+      app:layout_constraintTop_toBottomOf="@+id/tv_place_name" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <data>
+
+    <variable
+      name="place"
+      type="com.example.orthodoxapp.dataModel.FindPlace" />
+
+    <variable
+      name="itemClickListener"
+      type="com.example.orthodoxapp.ui.channels.ItemClickListener" />
+  </data>
+
+
+</layout>

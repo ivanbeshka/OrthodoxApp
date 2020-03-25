@@ -26,6 +26,11 @@ public class ToolsFragment extends Fragment {
             getActivity().finish();
         });
 
+        Button btnActivist = root.findViewById(R.id.btn_im_activist);
+        btnActivist.setOnClickListener(v -> {
+            new FragmentIAmActivist().show(getParentFragmentManager(), "show activist dialog");
+        });
+
         return root;
     }
 }

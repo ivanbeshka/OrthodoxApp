@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_msgs"
-        android:name="com.example.orthodoxapp.ui.msgs.MsgFragment"
-        android:label="@string/menu_msgs"
-        tools:layout="@layout/fragment_messages">
+        android:name="com.example.orthodoxapp.ui.channels.ChannelFragment"
+        android:label="@string/menu_channels"
+        tools:layout="@layout/fragment_channels">
         <action
             android:id="@+id/action_nav_msgs_to_nav_dialog"
             app:destination="@+id/nav_dialog" />
