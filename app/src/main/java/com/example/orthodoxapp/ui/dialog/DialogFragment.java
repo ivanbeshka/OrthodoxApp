@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 public class DialogFragment extends Fragment {
 
@@ -40,6 +41,7 @@ public class DialogFragment extends Fragment {
   private EditText etMsg;
   private RecyclerView recyclerViewDialog;
   private DialogViewModel viewModel;
+  private boolean isActivist = false;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +83,19 @@ public class DialogFragment extends Fragment {
     initDialog();
 
     btnSendMsg.setOnClickListener(v -> {
-      sendMessage();
+      if (isActivist) {
+        sendMessage();
+      } else {
+        Toast.makeText(getContext(), "You are not activist and can not sending messages",
+            Toast.LENGTH_LONG).show();
+      }
+    });
+
+    //library for listen open/hide keyboard
+    KeyboardVisibilityEvent.setEventListener(getActivity(), b -> {
+      if (b) {//if keyboard open scroll recycle to last element
+        recyclerViewDialog.scrollToPosition(recyclerViewDialog.getAdapter().getItemCount() - 1);
+      }
     });
 
     return root;
@@ -90,18 +104,20 @@ public class DialogFragment extends Fragment {
   private void sendMessage() {
     String textMsg = etMsg.getText().toString();
 
-    Date date = new Date();
-    String pattern = "dd MMMM yyyy hh:mm:ss";
-    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    if (!textMsg.equals("")) {
+      Date date = new Date();
+      String pattern = "dd MMMM yyyy hh:mm";
+      SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("RU"));
 
-    Message msg = Message.builder()
-        .placeUid(findPlace.getId())
-        .textMessage(textMsg)
-        .messageDate(sdf.format(date)).build();
+      Message msg = Message.builder()
+          .placeUid(findPlace.getId())
+          .textMessage(textMsg)
+          .messageDate(sdf.format(date)).build();
 
-    viewModel.addMsg(msg);
+      viewModel.addMsg(msg);
 
-    etMsg.setText("");
+      etMsg.setText("");
+    }
   }
 
   private void initDialog() {
@@ -115,6 +131,7 @@ public class DialogFragment extends Fragment {
           getContext());
       recyclerViewDialog.setLayoutManager(new LinearLayoutManager(getContext()));
       recyclerViewDialog.setAdapter(dialogAdapter);
+      recyclerViewDialog.scrollToPosition(messages.size() - 1);
     }
   };
 
@@ -138,21 +155,20 @@ public class DialogFragment extends Fragment {
 
   private void initView(View root) {
     ((MainActivity) getActivity()).setToolbarTitle(findPlace.getName());
-    LinearLayout postSendPanel = root.findViewById(R.id.layout_input_chat);
-    checkIfActivist(postSendPanel);
+    checkIfActivist();
 
     recyclerViewDialog = root.findViewById(R.id.recycler_view_dialog);
     btnSendMsg = root.findViewById(R.id.btn_send_msg);
     etMsg = root.findViewById(R.id.et_my_msg);
   }
 
-  private void checkIfActivist(View postSendPanel) {
+  private void checkIfActivist() {
     DatabaseReference reference = FirebaseHelper.getUserActivistPath();
     reference.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          postSendPanel.setVisibility(View.VISIBLE);
+          isActivist = true;
         }
       }
 
@@ -162,5 +178,4 @@ public class DialogFragment extends Fragment {
       }
     });
   }
-
 }
