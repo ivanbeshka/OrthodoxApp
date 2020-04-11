@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.orthodoxapp.dataModel.Message;
 import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
 import com.example.orthodoxapp.ui.MainActivity;
 import com.example.orthodoxapp.ui.dialog.DialogViewModel.DialogViewModelFactory;
+import com.example.orthodoxapp.ui.dialog.create_event.CreateEventFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +44,7 @@ public class DialogFragment extends Fragment {
   private RecyclerView recyclerViewDialog;
   private DialogViewModel viewModel;
   private boolean isActivist = false;
+  private ImageButton btnSelectTimeAndDate;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +101,18 @@ public class DialogFragment extends Fragment {
       }
     });
 
+    btnSelectTimeAndDate.setOnClickListener(v -> {
+      FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+      Fragment prev = getParentFragmentManager().findFragmentByTag("create_event");
+      if (prev != null){
+        ft.remove(prev);
+      }
+      ft.addToBackStack(null);
+
+      CreateEventFragment fragment = new CreateEventFragment();
+      fragment.show(ft, "create_event");
+    });
+
     return root;
   }
 
@@ -106,7 +121,7 @@ public class DialogFragment extends Fragment {
 
     if (!textMsg.equals("")) {
       Date date = new Date();
-      String pattern = "dd MMMM yyyy hh:mm";
+      String pattern = "dd/MM/yy, HH:mm";
       SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("RU"));
 
       Message msg = Message.builder()
@@ -160,6 +175,7 @@ public class DialogFragment extends Fragment {
     recyclerViewDialog = root.findViewById(R.id.recycler_view_dialog);
     btnSendMsg = root.findViewById(R.id.btn_send_msg);
     etMsg = root.findViewById(R.id.et_my_msg);
+    btnSelectTimeAndDate = root.findViewById(R.id.btn_add_timetable);
   }
 
   private void checkIfActivist() {

@@ -52,7 +52,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private LocationTools locationTools;
 
   private ImageButton btnSearchLocation;
-  private SeekBar seekBarRadius;
+  private SeekBar seekBar;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     mapFragment.getMapAsync(this);
 
     btnSearchLocation = root.findViewById(R.id.btn_search_location);
-    seekBarRadius = root.findViewById(R.id.seek_bar);
+    seekBar = root.findViewById(R.id.seek_bar);
 
   }
 
@@ -116,7 +116,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     //if save map
     MapStateManager mapStateManager = new MapStateManager(getContext());
     CameraPosition position = mapStateManager.getSavedCameraPosition();
-    if (position != null){
+    if (position != null) {
       mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
     }
   }
@@ -186,10 +186,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private void refreshMap(double lat, double lng) {
     mMap.clear();
 
-    int radius = seekBarRadius.getProgress();
-    if (radius == 0) {
-      radius = 1;
-    }
+    int radius = seekBar.getProgress();
+    if (radius == 0) radius = 1;
     radius *= 1000;
 
     String url = new CreateUrlForNearbyChurches()

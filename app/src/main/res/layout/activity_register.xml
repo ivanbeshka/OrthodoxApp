@@ -1,150 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/rootRegister"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/background_gradient"
+  tools:context=".ui.RegistrationActivity">
+
+  <Button
+    android:id="@+id/btnGoToLogin"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="@string/go_login"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/btnRegister"
+    app:layout_constraintTop_toBottomOf="@+id/til_repeat_password" />
+
+
+  <Button
+    android:id="@+id/btnRegister"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="@string/register"
+    app:layout_constraintEnd_toStartOf="@+id/btnGoToLogin"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/til_repeat_password" />
+
+  <ProgressBar
+    android:id="@+id/progressBarCreate"
+    style="?android:attr/progressBarStyleHorizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    tools:context=".ui.RegistrationActivity"
-    android:id="@+id/rootRegister">
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    android:visibility="invisible"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBarCreate"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+  <TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="64dp"
+    android:layout_gravity="center"
+    android:fontFamily="sans-serif"
+    android:text="@string/create_acc"
+    android:textSize="24sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.451"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="64dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/create_acc"
-        android:textColor="@color/colorOrangeBase"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.451"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_password_create"
+    style="@style/TextInputLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/til_email_create">
     <EditText
-        android:id="@+id/etFirstNameCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_rectangle_edittext"
-        android:hint="@string/input_first_name"
-        android:inputType="textPersonName"
-        android:padding="8dp"
-        android:textColor="@color/colorOrangeBase"
-        android:textColorHint="@color/colorOrangeBase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+      android:id="@+id/etPasswordCreate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/password"
+      android:inputType="textPassword" />
+  </com.google.android.material.textfield.TextInputLayout>
 
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_surname_create"
+    style="@style/TextInputLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/til_first_name_create">
     <EditText
-        android:id="@+id/etSurNameCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_rectangle_edittext"
-        android:hint="@string/input_surname"
-        android:inputType="textPersonName"
-        android:padding="8dp"
-        android:textColor="@color/colorOrangeBase"
-        android:textColorHint="@color/colorOrangeBase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFirstNameCreate" />
+      android:id="@+id/etSurNameCreate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/input_surname"
+      android:inputType="textPersonName" />
+  </com.google.android.material.textfield.TextInputLayout>
 
-
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_first_name_create"
+    style="@style/TextInputLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView">
     <EditText
-        android:id="@+id/etEmailCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_rectangle_edittext"
-        android:hint="@string/input_email"
-        android:inputType="textEmailAddress"
-        android:padding="8dp"
-        android:textColor="@color/colorOrangeBase"
-        android:textColorHint="@color/colorOrangeBase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSurNameCreate" />
+      android:id="@+id/etFirstNameCreate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/input_first_name"
+      android:inputType="textPersonName" />
+  </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_repeat_password"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/til_password_create">
     <EditText
-        android:id="@+id/etPasswordCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_rectangle_edittext"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:padding="8dp"
-        android:textColor="@color/colorOrangeBase"
-        android:textColorHint="@color/colorOrangeBase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmailCreate" />
+      android:id="@+id/etRepeatPassword"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/repeat_password"
+      android:inputType="textPassword" />
+  </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_email_create"
+    style="@style/TextInputLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/til_surname_create">
     <EditText
-        android:id="@+id/etRepeatPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_rectangle_edittext"
-        android:hint="@string/repeat_password"
-        android:inputType="textPassword"
-        android:padding="8dp"
-        android:textColor="@color/colorOrangeBase"
-        android:textColorHint="@color/colorOrangeBase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPasswordCreate" />
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_rectangle_button"
-        android:text="@string/register"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintEnd_toStartOf="@+id/btnGoToLogin"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRepeatPassword" />
-
-    <Button
-        android:id="@+id/btnGoToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_rectangle_button"
-        android:text="@string/go_login"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnRegister"
-        app:layout_constraintTop_toBottomOf="@+id/etRepeatPassword" />
+      android:id="@+id/etEmailCreate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/input_email"
+      android:inputType="textEmailAddress" />
+  </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

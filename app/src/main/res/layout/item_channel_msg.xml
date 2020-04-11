@@ -17,7 +17,7 @@
       android:padding="10dp"
       android:background="@drawable/their_msg_shape"
       android:text="@{message.textMessage}"
-      android:textColor="@color/colorBlack"
+      android:textColor="@color/black_900"
       android:textSize="18sp"
       app:layout_constraintBottom_toTopOf="@+id/tv_channel_msg_time"
       app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +29,7 @@
       android:id="@+id/tv_channel_msg_time"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:textSize="12sp"
       android:text="@{message.getMessageDate}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
