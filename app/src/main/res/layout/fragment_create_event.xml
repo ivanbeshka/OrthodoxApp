@@ -12,8 +12,8 @@
     android:id="@+id/btn_continue_timetable"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    android:text="ok"
+    android:layout_marginEnd="4dp"
+    android:text="@string/ok"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -21,23 +21,23 @@
     android:id="@+id/btn_cancel_timetable"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:text="cancel"
+    android:layout_marginStart="4dp"
+    android:text="@string/cancel"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
+
 
   <Button
     android:id="@+id/btn_add_date"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="12dp"
+
+    android:layout_marginEnd="8dp"
     android:text="date"
     android:textColor="@color/black_900"
     app:icon="@drawable/ic_add_24px"
     app:layout_constraintBottom_toTopOf="@+id/btn_continue_timetable"
-    app:layout_constraintEnd_toEndOf="parent" />
-
-
+    app:layout_constraintEnd_toStartOf="@+id/btn_add_time" />
   <TextView
     android:id="@+id/tv_date_time"
     android:layout_width="wrap_content"
@@ -58,8 +58,6 @@
     android:layout_marginStart="8dp"
     android:text="From"
     android:textSize="18sp"
-    app:layout_constraintEnd_toStartOf="@+id/tv_from_date"
-    app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tv_date_time" />
   <TextView
@@ -70,8 +68,6 @@
     android:layout_marginStart="8dp"
     android:text="To"
     android:textSize="18sp"
-    app:layout_constraintEnd_toStartOf="@+id/tv_to_date"
-    app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textView6" />
   <TextView
@@ -84,48 +80,56 @@
     android:textSize="18sp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
   <TextView
     android:id="@+id/tv_time"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="32dp"
-    android:layout_marginStart="48dp"
-    app:layout_constraintStart_toEndOf="@+id/tv_from_date"
-    app:layout_constraintTop_toBottomOf="@+id/tv_date_time" />
-  <com.google.android.material.textfield.TextInputEditText
-    android:id="@+id/tv_from_date"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:hint="pick date from"
-    android:textSize="14sp"
-    app:layout_constraintStart_toEndOf="@+id/textView6"
-    app:layout_constraintTop_toBottomOf="@+id/tv_date_time" />
-
-  <com.google.android.material.textfield.TextInputEditText
-    android:id="@+id/tv_to_date"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="28dp"
-    android:hint="pick date to"
-    android:textSize="14sp"
-    app:layout_constraintStart_toEndOf="@+id/textView9"
-    app:layout_constraintTop_toBottomOf="@+id/tv_from_date" />
+    android:layout_marginStart="24dp"
+    app:layout_constraintBottom_toTopOf="@+id/tv_date_to"
+    app:layout_constraintStart_toEndOf="@+id/tv_date_from"
+    app:layout_constraintTop_toBottomOf="@+id/tv_date_from"
+    app:layout_constraintVertical_bias="1.0" />
   <com.google.android.material.textfield.TextInputLayout
     style="@style/TextInputLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:layout_marginBottom="4dp"
     android:hint="write here"
     app:layout_constraintBottom_toTopOf="@+id/btn_add_date"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textView3"
-    app:layout_constraintVertical_bias="0.0">
+    app:layout_constraintTop_toBottomOf="@+id/textView3">
     <com.google.android.material.textfield.TextInputEditText
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:imeOptions="actionDone"
       android:inputType="textMultiLine" />
   </com.google.android.material.textfield.TextInputLayout>
+  <TextView
+    android:id="@+id/tv_date_from"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    app:layout_constraintBottom_toBottomOf="@+id/textView6"
+    app:layout_constraintStart_toEndOf="@+id/textView6"
+    app:layout_constraintTop_toTopOf="@+id/textView6" />
+  <TextView
+    android:id="@+id/tv_date_to"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="28dp"
+    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+    app:layout_constraintStart_toEndOf="@+id/textView9"
+    app:layout_constraintTop_toTopOf="@+id/textView9"
+    app:layout_constraintVertical_bias="0.6" />
+  <Button
+    android:id="@+id/btn_add_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="time"
+    app:icon="@drawable/ic_add_24px"
+    app:layout_constraintBottom_toTopOf="@+id/btn_continue_timetable"
+    app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -28,26 +29,41 @@ public class SelectTimeAndDateFragment extends DialogFragment {
       Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
 
-   initView(root);
+    initView(root);
 
     viewPager.setAdapter(new PagerLayoutAdapter(getParentFragmentManager(), getLifecycle()));
     new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-      if (position == 0) tab.setText("from"); else tab.setText("to");
+      if (position == 0) {
+        tab.setText("from");
+      } else {
+        tab.setText("to");
+      }
     }).attach();
+
+    btnOk.setOnClickListener(v -> {
+      DateFragment fromDateFragment = (DateFragment) getParentFragmentManager().findFragmentByTag(
+          "android:switcher:" + R.id.viewpager + ":" + 1);
+//      DateFragment toDateFragment = (DateFragment) getParentFragmentManager().findFragmentByTag(
+//          "android:switcher:" + R.id.viewpager + ":" + 2);
+
+      String fromDate = fromDateFragment.getDate();
+//      String toDate = toDateFragment.getDate();
+
+      Toast.makeText(getContext(), fromDate, Toast.LENGTH_LONG).show();
+    });
 
     btnCancel.setOnClickListener(v -> dismiss());
 
     return root;
   }
 
-  private void initView(View root){
+  private void initView(View root) {
     viewPager = root.findViewById(R.id.viewpager);
     tabLayout = root.findViewById(R.id.tab_layout);
     btnOk = root.findViewById(R.id.btn_ok_vp);
     btnCancel = root.findViewById(R.id.btn_cancel_vp);
   }
 }
-
 
 
 class PagerLayoutAdapter extends FragmentStateAdapter {
@@ -60,7 +76,7 @@ class PagerLayoutAdapter extends FragmentStateAdapter {
   @NonNull
   @Override
   public Fragment createFragment(int position) {
-    return DateFragment.newInstance(position);
+    return new DateFragment();
   }
 
   @Override
