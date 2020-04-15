@@ -1,5 +1,6 @@
 package com.example.orthodoxapp.ui.dialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +37,8 @@ import java.util.Locale;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 public class DialogFragment extends Fragment {
+
+  public static final int RC_CREATE_EVENT = 10089;
 
   private FindPlace findPlace;
 
@@ -87,7 +90,8 @@ public class DialogFragment extends Fragment {
 
     btnSendMsg.setOnClickListener(v -> {
       if (isActivist) {
-        sendMessage();
+        String msg = etMsg.getText().toString();
+        sendMessage(msg);
       } else {
         Toast.makeText(getContext(), "You are not activist and can not sending messages",
             Toast.LENGTH_LONG).show();
@@ -110,26 +114,36 @@ public class DialogFragment extends Fragment {
       ft.addToBackStack(null);
 
       CreateEventFragment fragment = new CreateEventFragment();
+      fragment.setTargetFragment(this, RC_CREATE_EVENT);
       fragment.show(ft, "create_event");
     });
 
     return root;
   }
 
-  private void sendMessage() {
-    String textMsg = etMsg.getText().toString();
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
-    if (!textMsg.equals("")) {
+    if (requestCode == RC_CREATE_EVENT){
+      String msg = data.getStringExtra("msg");
+      sendMessage(msg);
+    }
+  }
+
+  private void sendMessage(String msg) {
+
+    if (!msg.equals("")) {
       Date date = new Date();
       String pattern = "dd/MM/yy, HH:mm";
       SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("RU"));
 
-      Message msg = Message.builder()
+      Message messageBuild = Message.builder()
           .placeUid(findPlace.getId())
-          .textMessage(textMsg)
+          .textMessage(msg)
           .messageDate(sdf.format(date)).build();
 
-      viewModel.addMsg(msg);
+      viewModel.addMsg(messageBuild);
 
       etMsg.setText("");
     }

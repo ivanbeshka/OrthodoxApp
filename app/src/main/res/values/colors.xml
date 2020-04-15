@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fff176</color>
-    <color name="colorPrimaryVariant">#ffffa8</color>
-    <color name="colorPrimaryDark">#cabf45</color>
-    <color name="colorSecondary">#ff9100</color>
-    <color name="colorSecondaryVariant">#ffc246</color>
+    <color name="colorPrimary">#ff9999</color>
+    <color name="colorPrimaryVariant">#ffcbca</color>
+    <color name="colorPrimaryDark">#c9696b</color>
+    <color name="colorSecondary">#444f5a</color>
+    <color name="colorSecondaryVariant">#1c2731</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhite0">#00FFFFFF</color>
 
@@ -14,7 +14,8 @@
     <!--Color surface (light), color on error (light), -->
     <!--color on surface (dark), color on surface (dark)-->
     <color name="white_50">#ffffff</color>
-
+    <color name="blackHint">#59000000</color>
+    <color name="black">#000000</color>
     <color name="black_800">#121212</color> <!--Color surface (dark)-->
     <!--Color on secondary (light), color on background (light),-->
     <!--color on surface (light)-->

@@ -1,11 +1,11 @@
 package com.example.orthodoxapp.ui.dialog.create_event;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -16,13 +16,15 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.orthodoxapp.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import java.util.ArrayList;
 
-public class SelectTimeAndDateFragment extends DialogFragment {
+public class SelectDateFragment extends DialogFragment {
 
   private ViewPager2 viewPager;
   private TabLayout tabLayout;
   private Button btnOk;
   private Button btnCancel;
+  private PagerDateAdapter adapter;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +33,8 @@ public class SelectTimeAndDateFragment extends DialogFragment {
 
     initView(root);
 
-    viewPager.setAdapter(new PagerLayoutAdapter(getParentFragmentManager(), getLifecycle()));
+    adapter = new PagerDateAdapter(getParentFragmentManager(), getLifecycle());
+    viewPager.setAdapter(adapter);
     new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
       if (position == 0) {
         tab.setText("from");
@@ -41,15 +44,22 @@ public class SelectTimeAndDateFragment extends DialogFragment {
     }).attach();
 
     btnOk.setOnClickListener(v -> {
-      DateFragment fromDateFragment = (DateFragment) getParentFragmentManager().findFragmentByTag(
-          "android:switcher:" + R.id.viewpager + ":" + 1);
-//      DateFragment toDateFragment = (DateFragment) getParentFragmentManager().findFragmentByTag(
-//          "android:switcher:" + R.id.viewpager + ":" + 2);
-
+      DateFragment fromDateFragment = adapter.getFragment(0);
       String fromDate = fromDateFragment.getDate();
-//      String toDate = toDateFragment.getDate();
+      String toDate;
+      //creating fragment only post scrolling on it
+      try {
+        DateFragment toDateFragment = adapter.getFragment(1);
+        toDate = toDateFragment.getDate();
+      }catch (IndexOutOfBoundsException ignored){
+        toDate = fromDate;
+      }
 
-      Toast.makeText(getContext(), fromDate, Toast.LENGTH_LONG).show();
+      Intent intent = new Intent();
+      intent.putExtra("fromDate", fromDate);
+      intent.putExtra("toDate", toDate);
+      getTargetFragment().onActivityResult(CreateEventFragment.RC_TARGET_FRAGMENT_DATE, 1, intent);
+      dismiss();
     });
 
     btnCancel.setOnClickListener(v -> dismiss());
@@ -66,17 +76,26 @@ public class SelectTimeAndDateFragment extends DialogFragment {
 }
 
 
-class PagerLayoutAdapter extends FragmentStateAdapter {
+class PagerDateAdapter extends FragmentStateAdapter {
 
-  PagerLayoutAdapter(@NonNull FragmentManager fragmentManager,
+  private ArrayList<DateFragment> fragments;
+
+  PagerDateAdapter(@NonNull FragmentManager fragmentManager,
       @NonNull Lifecycle lifecycle) {
     super(fragmentManager, lifecycle);
+    fragments = new ArrayList<>();
+  }
+
+  DateFragment getFragment(int position) {
+    return fragments.get(position);
   }
 
   @NonNull
   @Override
   public Fragment createFragment(int position) {
-    return new DateFragment();
+    DateFragment fragment = new DateFragment();
+    fragments.add(position, fragment);
+    return fragment;
   }
 
   @Override

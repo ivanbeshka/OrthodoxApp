@@ -114,7 +114,7 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
         });
       } else { //if no icon
         findPlace.setPhoto(
-            BitmapFactory.decodeResource(getApplication().getResources(), R.raw.icon_church));
+            BitmapFactory.decodeResource(getApplication().getResources(), R.raw.church));
       }
 
       //this is main////////////////////

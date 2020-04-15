@@ -5,7 +5,7 @@
   android:id="@+id/rootRegister"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/background_gradient"
+  android:background="@drawable/background"
   tools:context=".ui.RegistrationActivity">
 
   <Button
@@ -116,7 +116,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/til_repeat_password"
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    style="@style/TextInputLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
