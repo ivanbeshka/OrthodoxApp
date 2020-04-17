@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class ChannelFragment extends Fragment {
 
+  private static final String TAG = "CHANNELFRAGMENT";
+
   private ChannelViewModel channelViewModel;
   private RecyclerView recyclerViewChannel;
 
@@ -51,5 +53,4 @@ public class ChannelFragment extends Fragment {
       recyclerViewChannel.setAdapter(adapter);
     }
   };
-
 }

@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
 import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
@@ -36,22 +36,22 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
 
   private final String TAG = "ChannelViewModel";
 
-  private MutableLiveData<ArrayList<FindPlace>> data;
+  private final static String FIND_PLACES = "find_places";
+
+  private SavedStateHandle data;
 
   private final DatabaseReference databaseReference = FirebaseHelper.getUserFollowsPath();
 
   private FollowPlaceInteractor interactor = new FollowPlaceInteractor();
 
-  public ChannelViewModel(@NonNull Application application) {
+  public ChannelViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
     super(application);
+    data = savedStateHandle;
+    setDataListener();
   }
 
   public LiveData<ArrayList<FindPlace>> getData() {
-    if (data == null) {
-      data = new MutableLiveData<>();
-      setDataListener();
-    }
-    return data;
+    return data.getLiveData(FIND_PLACES);
   }
 
   private void setDataListener() {
@@ -60,7 +60,7 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          Map<String, Boolean> map = (Map) dataSnapshot.getValue();
+          Map<String, Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
           Set<String> churchesIds = map.keySet();
           for (String churchId : churchesIds) {
             String url = new CreateUrlForFollowChurches()
@@ -118,17 +118,16 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
       }
 
       //this is main////////////////////
-      ArrayList<FindPlace> nowData = new ArrayList<>();
-
-      if (data.getValue() != null) {
-        nowData = data.getValue();
+      ArrayList<FindPlace> nowData = data.get(FIND_PLACES);
+      if (nowData != null) {
         if (!nowData.contains(findPlace)) {
           nowData.add(findPlace);
-          data.setValue(nowData);
+          data.set(FIND_PLACES, nowData);
         }
-      } else {
-        nowData.add(findPlace);
-        data.setValue(nowData);
+      }else {
+        ArrayList<FindPlace> places = new ArrayList<>();
+        places.add(findPlace);
+        data.set(FIND_PLACES, places);
       }
       //////////////////////////////////
 
