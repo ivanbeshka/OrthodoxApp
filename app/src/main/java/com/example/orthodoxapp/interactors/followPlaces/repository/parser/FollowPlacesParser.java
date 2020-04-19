@@ -12,17 +12,24 @@ public class FollowPlacesParser {
 
     String phone = "";
     if (info.has("formatted_phone_number")) {
-       phone = info.getString("formatted_phone_number");
+      phone = info.getString("formatted_phone_number");
+    }
+
+    String photoRef = "";
+    if (info.has("photos")) {
+      photoRef = info.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
     }
 
     String nameOfChurch = info.getString("name");
     String address = info.getString("formatted_address");
     String placeId = info.getString("place_id");
+
     FindPlace findPlace = FindPlace.builder()
         .name(nameOfChurch)
         .id(placeId)
         .phoneNumber(phone)
         .street(address)
+        .photoRef(photoRef)
         .build();
 
     return findPlace;

@@ -19,7 +19,7 @@ import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
 import com.example.orthodoxapp.interactors.nearbyPlaces.NearbyPlacesInteractor;
 import com.example.orthodoxapp.interactors.nearbyPlaces.tasks.GetNearbyPlacesDataTask.AsyncResponse;
-import com.example.orthodoxapp.ui.createUrl.CreateUrlForNearbyChurches;
+import com.example.orthodoxapp.ui.createUrl.UrlForNearbyChurches;
 import com.example.orthodoxapp.ui.map.LocationTools.CallbackLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -190,8 +190,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     if (radius == 0) radius = 1;
     radius *= 1000;
 
-    String url = new CreateUrlForNearbyChurches()
-        .createUrlForNearbyChurches(lat, lng, getContext(), radius);
+    String url = new UrlForNearbyChurches()
+        .create(lat, lng, getContext(), radius);
 
     NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
     interactor.getFindPlaceList(url, this);
