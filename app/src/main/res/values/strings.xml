@@ -53,21 +53,26 @@
   <string name="please_wait">Registration. Please wait…</string>
 
   <string name="map">Map</string>
-  <string name="logout_from_your_account">logout from your account</string>
+  <string name="logout_from_your_account">logout from account</string>
   <string name="Unsubscribe">Unsubscribe</string>
   <string name="i_am_activist">I am activist and i want to help lay out the schedule</string>
   <string name="agreement">IF YOU ARE READY TO TAKE RESPONSIBILITY FOR INFORMING PEOPLE, FELL FREE TO AGREE</string>
   <string name="submit_new_password_link">Submit New Password Link</string>
-  <string name="input_e_mail">input E-Mail</string>
   <string name="email">Email</string>
   <string name="password">Password</string>
   <string name="log_in">LOG IN</string>
-  <string name="input_first_name">input First Name</string>
-  <string name="input_surname">input Surname</string>
-  <string name="input_email">input Email</string>
-  <string name="repeat_password">Repeat Password</string>
+  <string name="input_first_name">First Name</string>
+  <string name="input_surname">Surname</string>
+  <string name="input_email">Email</string>
+  <string name="repeat_password">Repeat password</string>
   <string name="go_login">GO LOGIN</string>
   <string name="register">REGISTER</string>
   <string name="enter_message">Enter message</string>
 
+  <string name="orthodoxapp">OrthodoxApp</string>
+  <string name="ok">ok</string>
+  <string name="cancel">cancel</string>
+  <string name="send">send</string>
+
+  <string name="not_all_inf">You did not enter all the information about the upcoming event</string>
 </resources>

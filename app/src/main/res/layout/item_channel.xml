@@ -6,18 +6,19 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="10dp"
     android:onClick="@{() -> itemClickListener.onItemClick(place)}">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
       android:id="@+id/iv_place_image"
       android:layout_width="50dp"
       android:layout_height="50dp"
-      bind:imageBitmap="@{place.photo}"
       android:scaleType="centerCrop"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+      app:layout_constraintTop_toTopOf="parent"
+      bind:image="@{place.photoRef}" />
 
     <TextView
       android:id="@+id/tv_place_name"

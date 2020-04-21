@@ -19,7 +19,7 @@ import com.example.orthodoxapp.R;
 import com.example.orthodoxapp.dataModel.FindPlace;
 import com.example.orthodoxapp.interactors.nearbyPlaces.NearbyPlacesInteractor;
 import com.example.orthodoxapp.interactors.nearbyPlaces.tasks.GetNearbyPlacesDataTask.AsyncResponse;
-import com.example.orthodoxapp.ui.createUrl.CreateUrlForNearbyChurches;
+import com.example.orthodoxapp.ui.createUrl.UrlForNearbyChurches;
 import com.example.orthodoxapp.ui.map.LocationTools.CallbackLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,7 +52,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private LocationTools locationTools;
 
   private ImageButton btnSearchLocation;
-  private SeekBar seekBarRadius;
+  private SeekBar seekBar;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     mapFragment.getMapAsync(this);
 
     btnSearchLocation = root.findViewById(R.id.btn_search_location);
-    seekBarRadius = root.findViewById(R.id.seek_bar);
+    seekBar = root.findViewById(R.id.seek_bar);
 
   }
 
@@ -116,7 +116,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     //if save map
     MapStateManager mapStateManager = new MapStateManager(getContext());
     CameraPosition position = mapStateManager.getSavedCameraPosition();
-    if (position != null){
+    if (position != null) {
       mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
     }
   }
@@ -186,14 +186,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private void refreshMap(double lat, double lng) {
     mMap.clear();
 
-    int radius = seekBarRadius.getProgress();
-    if (radius == 0) {
-      radius = 1;
-    }
+    int radius = seekBar.getProgress();
+    if (radius == 0) radius = 1;
     radius *= 1000;
 
-    String url = new CreateUrlForNearbyChurches()
-        .createUrlForNearbyChurches(lat, lng, getContext(), radius);
+    String url = new UrlForNearbyChurches()
+        .create(lat, lng, getContext(), radius);
 
     NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
     interactor.getFindPlaceList(url, this);

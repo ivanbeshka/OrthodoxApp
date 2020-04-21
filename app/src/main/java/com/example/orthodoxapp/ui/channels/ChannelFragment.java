@@ -17,12 +17,14 @@ import java.util.ArrayList;
 
 public class ChannelFragment extends Fragment {
 
+  private static final String TAG = "CHANNELFRAGMENT";
+
   private ChannelViewModel channelViewModel;
   private RecyclerView recyclerViewChannel;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
-    channelViewModel = new ViewModelProvider(this).get(ChannelViewModel.class);
+    channelViewModel = new ViewModelProvider(requireActivity()).get(ChannelViewModel.class);
     View root = inflater.inflate(R.layout.fragment_channels, container, false);
 
     recyclerViewChannel = root.findViewById(R.id.rv_channels);
@@ -51,5 +53,4 @@ public class ChannelFragment extends Fragment {
       recyclerViewChannel.setAdapter(adapter);
     }
   };
-
 }

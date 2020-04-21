@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffea00</color>
-    <color name="colorPrimaryDark">#c7b800</color>
-    <color name="colorAccent">#F44336</color>
-    <color name="colorAccentForProfile">#EB4580</color>
+    <color name="colorPrimary">#ff9999</color>
+    <color name="colorPrimaryVariant">#ffcbca</color>
+    <color name="colorPrimaryDark">#c9696b</color>
+    <color name="colorSecondary">#444f5a</color>
+    <color name="colorSecondaryVariant">#1c2731</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorChatMsgTheir">#ff9100</color>
-    <color name="colorBlack">#BF000000</color>
-    <color name="colorBlackInputT">#80000000</color>
     <color name="colorWhite0">#00FFFFFF</color>
-    <color name="colorYellowBase">#FFD600</color>
-    <color name="colorOrangeBase">#ff9100</color>
+
+    <color name="red_200">#cf6679</color> <!--Color error (dark)-->
+    <color name="red_600">#b00020</color> <!--Color error (light)-->
+
+    <!--Color surface (light), color on error (light), -->
+    <!--color on surface (dark), color on surface (dark)-->
+    <color name="white_50">#ffffff</color>
+    <color name="blackHint">#59000000</color>
+    <color name="black">#000000</color>
+    <color name="black_800">#121212</color> <!--Color surface (dark)-->
+    <!--Color on secondary (light), color on background (light),-->
+    <!--color on surface (light)-->
+    <color name="black_900">#442c2e</color>
+
 </resources>

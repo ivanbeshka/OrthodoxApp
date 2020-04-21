@@ -1,5 +1,6 @@
 package com.example.orthodoxapp.ui.dialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.example.orthodoxapp.dataModel.Message;
 import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
 import com.example.orthodoxapp.ui.MainActivity;
 import com.example.orthodoxapp.ui.dialog.DialogViewModel.DialogViewModelFactory;
+import com.example.orthodoxapp.ui.dialog.create_event.CreateEventFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 public class DialogFragment extends Fragment {
+
+  public static final int RC_CREATE_EVENT = 10089;
 
   private FindPlace findPlace;
 
@@ -40,6 +46,8 @@ public class DialogFragment extends Fragment {
   private EditText etMsg;
   private RecyclerView recyclerViewDialog;
   private DialogViewModel viewModel;
+  private boolean isActivist = false;
+  private ImageButton btnSelectTimeAndDate;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,27 +89,64 @@ public class DialogFragment extends Fragment {
     initDialog();
 
     btnSendMsg.setOnClickListener(v -> {
-      sendMessage();
+      if (isActivist) {
+        String msg = etMsg.getText().toString();
+        sendMessage(msg);
+      } else {
+        Toast.makeText(getContext(), "You are not activist and can not sending messages",
+            Toast.LENGTH_LONG).show();
+      }
+    });
+
+    //library for listen open/hide keyboard
+    KeyboardVisibilityEvent.setEventListener(getActivity(), b -> {
+      if (b) {//if keyboard open scroll recycle to last element
+        recyclerViewDialog.scrollToPosition(recyclerViewDialog.getAdapter().getItemCount() - 1);
+      }
+    });
+
+    btnSelectTimeAndDate.setOnClickListener(v -> {
+      FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+      Fragment prev = getParentFragmentManager().findFragmentByTag("create_event");
+      if (prev != null){
+        ft.remove(prev);
+      }
+      ft.addToBackStack(null);
+
+      CreateEventFragment fragment = new CreateEventFragment();
+      fragment.setTargetFragment(this, RC_CREATE_EVENT);
+      fragment.show(ft, "create_event");
     });
 
     return root;
   }
 
-  private void sendMessage() {
-    String textMsg = etMsg.getText().toString();
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
-    Date date = new Date();
-    String pattern = "dd MMMM yyyy hh:mm:ss";
-    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    if (requestCode == RC_CREATE_EVENT){
+      String msg = data.getStringExtra("msg");
+      sendMessage(msg);
+    }
+  }
 
-    Message msg = Message.builder()
-        .placeUid(findPlace.getId())
-        .textMessage(textMsg)
-        .messageDate(sdf.format(date)).build();
+  private void sendMessage(String msg) {
 
-    viewModel.addMsg(msg);
+    if (!msg.equals("")) {
+      Date date = new Date();
+      String pattern = "dd/MM/yy, HH:mm";
+      SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("RU"));
 
-    etMsg.setText("");
+      Message messageBuild = Message.builder()
+          .placeUid(findPlace.getId())
+          .textMessage(msg)
+          .messageDate(sdf.format(date)).build();
+
+      viewModel.addMsg(messageBuild);
+
+      etMsg.setText("");
+    }
   }
 
   private void initDialog() {
@@ -115,6 +160,7 @@ public class DialogFragment extends Fragment {
           getContext());
       recyclerViewDialog.setLayoutManager(new LinearLayoutManager(getContext()));
       recyclerViewDialog.setAdapter(dialogAdapter);
+      recyclerViewDialog.scrollToPosition(messages.size() - 1);
     }
   };
 
@@ -138,21 +184,21 @@ public class DialogFragment extends Fragment {
 
   private void initView(View root) {
     ((MainActivity) getActivity()).setToolbarTitle(findPlace.getName());
-    LinearLayout postSendPanel = root.findViewById(R.id.layout_input_chat);
-    checkIfActivist(postSendPanel);
+    checkIfActivist();
 
     recyclerViewDialog = root.findViewById(R.id.recycler_view_dialog);
     btnSendMsg = root.findViewById(R.id.btn_send_msg);
     etMsg = root.findViewById(R.id.et_my_msg);
+    btnSelectTimeAndDate = root.findViewById(R.id.btn_add_timetable);
   }
 
-  private void checkIfActivist(View postSendPanel) {
+  private void checkIfActivist() {
     DatabaseReference reference = FirebaseHelper.getUserActivistPath();
     reference.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          postSendPanel.setVisibility(View.VISIBLE);
+          isActivist = true;
         }
       }
 
@@ -162,5 +208,4 @@ public class DialogFragment extends Fragment {
       }
     });
   }
-
 }
