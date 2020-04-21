@@ -1,6 +1,7 @@
 package com.example.orthodoxapp.ui.channels;
 
 import android.app.Application;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -65,51 +66,12 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
   @Override
   public void followPlace(FindPlace findPlace) {
     addFindPlaceToData(findPlace);
-//    String placeId = findPlace.getId();
-//
-//// Specify fields. Requests for photos must always have the PHOTO_METADATAS field.
-//    List<Field> fields = Arrays.asList(Place.Field.PHOTO_METADATAS);
-//
-//// Get a Place object
-//    FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
-//
-//    placesClient.fetchPlace(placeRequest).addOnSuccessListener((response) -> {
-//      Place place = response.getPlace();
-//
-//      if (place.getPhotoMetadatas() != null) {
-//        // Get the photo metadata.
-//        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-//
-//        // Create a FetchPhotoRequest.
-//        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-//            .setMaxWidth(100) // Optional.
-//            .setMaxHeight(100) // Optional.
-//            .build();
-//        placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-//          Bitmap bitmap = fetchPhotoResponse.getBitmap();
-//          findPlace.setPhoto(bitmap);
-//
-//          addFindPlaceToData(findPlace);
-//
-//        }).addOnFailureListener((exception) -> {
-//          if (exception instanceof ApiException) {
-//            ApiException apiException = (ApiException) exception;
-//            int statusCode = apiException.getStatusCode();
-//            // Handle error with given status code.
-//            Log.e(TAG, "Place not found: " + exception.getMessage());
-//          }
-//        });
-//      } else { //if no icon
-//        findPlace.setPhoto(BitmapFactory.decodeResource(getApplication().getResources(), R.raw.church));
-//
-//        addFindPlaceToData(findPlace);
-//      }
-//    });
-
   }
 
-  private void addFindPlaceToData(FindPlace findPlace){
-    ArrayList<FindPlace> nowData = data.get(FIND_PLACES);
+  private void addFindPlaceToData(FindPlace findPlace) {
+    LiveData<ArrayList<FindPlace>> now = data.getLiveData(FIND_PLACES);
+
+    ArrayList<FindPlace> nowData = now.getValue();
     if (nowData != null) {
       if (!nowData.contains(findPlace)) {
         nowData.add(findPlace);
@@ -120,5 +82,14 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
       places.add(findPlace);
       data.set(FIND_PLACES, places);
     }
+
+    Log.d("livedata", data.getLiveData(FIND_PLACES).getValue().toString());
+
+  }
+
+  @Override
+  protected void onCleared() {
+    super.onCleared();
+    Log.d("onCleared", "oncleared");
   }
 }
