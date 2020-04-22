@@ -34,6 +34,9 @@ public class MainActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    authorizeInFirebase();
+
     setContentView(R.layout.activity_main);
     toolbar = findViewById(R.id.toolbar_main);
     setSupportActionBar(toolbar);
@@ -48,22 +51,6 @@ public class MainActivity extends BaseActivity {
     navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-    firebaseAuth = FirebaseAuth.getInstance();
-    authStateListener = firebaseAuth -> {
-      FirebaseUser user = firebaseAuth.getCurrentUser();
-      if (user == null) {
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        finish();
-      }
-    };
-
-    final FirebaseUser user = FirebaseHelper.getFirebaseUser();
-    if (user != null) {
-      Toast.makeText(getApplicationContext(), "Hi " + user.getDisplayName(), Toast.LENGTH_LONG)
-          .show();
-      isAuthorize = true;
-    }
 
     initPlaceClient();
 
@@ -82,6 +69,23 @@ public class MainActivity extends BaseActivity {
     toolbar.setTitle(title);
   }
 
+  private void authorizeInFirebase(){
+    firebaseAuth = FirebaseAuth.getInstance();
+    authStateListener = firebaseAuth -> {
+      FirebaseUser user = firebaseAuth.getCurrentUser();
+      if (user == null) {
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
+      }
+    };
+
+    final FirebaseUser user = FirebaseHelper.getFirebaseUser();
+    if (user != null) {
+      Toast.makeText(getApplicationContext(), "Hello " + user.getDisplayName() + " !", Toast.LENGTH_LONG)
+          .show();
+      isAuthorize = true;
+    }
+  }
 
   private void initPlaceClient() {
     if (!Places.isInitialized()) {

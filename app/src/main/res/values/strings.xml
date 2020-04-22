@@ -75,4 +75,6 @@
   <string name="send">send</string>
 
   <string name="not_all_inf">You did not enter all the information about the upcoming event</string>
+  <string name="gps_network_not_enabled">GPS not enabled</string>
+  <string name="open_location_settings">open settings</string>
 </resources>

@@ -14,27 +14,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class FragmentFollowChurchDialog extends DialogFragment {
 
-    private String churchID;
+  private String churchID;
+  private String churchName;
 
-    FragmentFollowChurchDialog(String churchID) {
-        this.churchID = churchID;
-    }
+  FragmentFollowChurchDialog(String churchID, String churchName) {
+    this.churchID = churchID;
+    this.churchName = churchName;
+  }
 
-    @NotNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+  @NotNull
+  @Override
+  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setMessage("Follow on church?")
-                .setPositiveButton("Follow", (dialog, which) -> {
-                    DatabaseReference databaseReference = FirebaseHelper.getUserFollowsChurchIdPath(churchID);
-                    databaseReference.setValue(true);
+    builder.setMessage("Follow on " + churchName + " ?")
+        .setPositiveButton("Follow", (dialog, which) -> {
+          DatabaseReference databaseReference = FirebaseHelper.getUserFollowsChurchIdPath(churchID);
+          databaseReference.setValue(true);
 
-                    Toast.makeText(getContext(), "Follow successful", Toast.LENGTH_SHORT).show();
-                });
+          Toast.makeText(getContext(), "Follow successful", Toast.LENGTH_SHORT).show();
+        });
 
-        return builder.create();
-    }
+    return builder.create();
+  }
 
 }
