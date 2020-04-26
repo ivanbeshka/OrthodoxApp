@@ -49,9 +49,9 @@ public class CreateEventFragment extends DialogFragment {
         Toast.makeText(getContext(), R.string.not_all_inf, Toast.LENGTH_LONG).show();
       }else {
         Intent intent = new Intent();
-        String msg = "From " + tvFromDate.getText() + " to " + tvToDate.getText() + "\n" +
-            "Time: " + tvTime.getText() + "\n" +
-            "Description: "+ "\n" + etDescription.getText().toString();
+        String msg = "С " + tvFromDate.getText() + " по " + tvToDate.getText() + "\n" +
+            "Время: " + tvTime.getText() + "\n" +
+            "Описание: "+ "\n" + etDescription.getText().toString();
         intent.putExtra("msg", msg);
         getTargetFragment().onActivityResult(RC_CREATE_EVENT, 1, intent);
       }

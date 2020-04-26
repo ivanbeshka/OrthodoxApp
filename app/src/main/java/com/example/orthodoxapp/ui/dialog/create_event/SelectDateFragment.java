@@ -37,9 +37,9 @@ public class SelectDateFragment extends DialogFragment {
     viewPager.setAdapter(adapter);
     new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
       if (position == 0) {
-        tab.setText("from");
+        tab.setText("Начао");
       } else {
-        tab.setText("to");
+        tab.setText("Конец");
       }
     }).attach();
 

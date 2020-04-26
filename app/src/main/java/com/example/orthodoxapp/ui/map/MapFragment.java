@@ -1,6 +1,7 @@
 package com.example.orthodoxapp.ui.map;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,8 +49,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
   private static final int RC_PERMISSION_LOCATION = 12001;
 
-  private final int ZOOM = 13;
-
   private GoogleMap mMap;
   private AutocompleteSupportFragment autocomplete;
 
@@ -63,16 +62,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private TextView tvSearchRadius;
   private MapViewModel mapViewModel;
 
+  private Context context;
+
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     mapViewModel = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
     View root = inflater.inflate(R.layout.fragment_map, container, false);
+    context = getContext();
 
     initViews(root);
 
-    locationTools = new LocationTools(MapFragment.this, getContext());
+    locationTools = new LocationTools(MapFragment.this, context);
     locationTools.initLocation();
 
     seekBarRadius.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -102,12 +104,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         try {
           gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         try {
           network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         if (!gps_enabled && !network_enabled) {
@@ -154,6 +156,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
         .findFragmentById(R.id.map);
 
+    assert mapFragment != null;
     mapFragment.getMapAsync(this);
 
     btnSearchLocation = root.findViewById(R.id.btn_search_location);
@@ -163,9 +166,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     setSearchRadiusView();
   }
 
+  @SuppressLint("SetTextI18n")
   private void setSearchRadiusView() {
-    int searchRadius = (seekBarRadius.getProgress() + 1) * 1000;
-    tvSearchRadius.setText("search radius: " + searchRadius + " km");
+    int searchRadius = seekBarRadius.getProgress() * 1000;
+    if (searchRadius != 0) {
+      tvSearchRadius
+          .setText(getResources().getString(R.string.search_radius) + searchRadius + " км");
+    } else {
+      tvSearchRadius.setText(getResources().getString(R.string.search_one_place));
+    }
+  }
+
+  private int getRightZoom(int distance) {
+    switch (distance) {
+      case 1:
+        return 18;
+      case 1001:
+        return 14;
+      case 2001:
+      case 3001:
+        return 13;
+      case 4001:
+      case 5001:
+      case 6001:
+        return 12;
+      case 7001:
+      case 8001:
+      case 9001:
+      case 10001:
+        return 11;
+      default:
+        return 10;
+    }
   }
 
   @Override
@@ -183,7 +215,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     //if save map
-    MapStateManager mapStateManager = new MapStateManager(getContext());
+    MapStateManager mapStateManager = new MapStateManager(context);
     CameraPosition position = mapStateManager.getSavedCameraPosition();
     if (position != null) {
       mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
@@ -193,7 +225,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   @Override
   public boolean onMarkerClick(Marker marker) {
 
-    //TODO realisation with other fragment bottom on screen
     for (FindPlace findPlace : findPlaces) {
       if (findPlace.getLat() == marker.getPosition().latitude && findPlace.getLng() == marker
           .getPosition().longitude) {
@@ -236,7 +267,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   //Permissions methods
   private boolean checkPermission() {
     int permissionStatusFine = ContextCompat
-        .checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        .checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
 
     if (permissionStatusFine != PackageManager.PERMISSION_GRANTED) {
       requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -256,16 +287,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
   private void refreshMap(double lat, double lng) {
     mMap.clear();
 
-    int radius = (seekBarRadius.getProgress() + 1) * 1000;
-
+    int radius = seekBarRadius.getProgress() * 1000 + 1;
     String url = new UrlForNearbyChurches()
-        .create(lat, lng, getContext(), radius);
+        .create(lat, lng, context, radius);
 
     NearbyPlacesInteractor interactor = new NearbyPlacesInteractor();
     interactor.getFindPlaceList(url, this);
 
     mMap.moveCamera(CameraUpdateFactory
-        .newLatLngZoom(new LatLng(lat, lng), ZOOM));
+        .newLatLngZoom(new LatLng(lat, lng), getRightZoom(radius)));
 
   }
 
@@ -292,7 +322,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     //save map position
-    MapStateManager mapStateManager = new MapStateManager(getContext());
+    MapStateManager mapStateManager = new MapStateManager(context);
     mapStateManager.saveMapState(mMap);
   }
 }

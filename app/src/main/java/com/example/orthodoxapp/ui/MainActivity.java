@@ -1,21 +1,14 @@
 package com.example.orthodoxapp.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.orthodoxapp.R;
-import com.example.orthodoxapp.firabaseHelper.FirebaseHelper;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends BaseActivity {
 
@@ -24,18 +17,9 @@ public class MainActivity extends BaseActivity {
   private NavController navController;
   private Toolbar toolbar;
 
-  private FirebaseAuth firebaseAuth;
-  private FirebaseAuth.AuthStateListener authStateListener;
-
-  public static boolean isAuthorize = false;
-
-  public static PlacesClient placesClient;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    authorizeInFirebase();
 
     setContentView(R.layout.activity_main);
     toolbar = findViewById(R.id.toolbar_main);
@@ -52,8 +36,6 @@ public class MainActivity extends BaseActivity {
     NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-    initPlaceClient();
-
     navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
       if (destination.getId() == R.id.nav_dialog) {
         hideBotNav();
@@ -69,31 +51,6 @@ public class MainActivity extends BaseActivity {
     toolbar.setTitle(title);
   }
 
-  private void authorizeInFirebase(){
-    firebaseAuth = FirebaseAuth.getInstance();
-    authStateListener = firebaseAuth -> {
-      FirebaseUser user = firebaseAuth.getCurrentUser();
-      if (user == null) {
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        finish();
-      }
-    };
-
-    final FirebaseUser user = FirebaseHelper.getFirebaseUser();
-    if (user != null) {
-      Toast.makeText(getApplicationContext(), "Hello " + user.getDisplayName() + " !", Toast.LENGTH_LONG)
-          .show();
-      isAuthorize = true;
-    }
-  }
-
-  private void initPlaceClient() {
-    if (!Places.isInitialized()) {
-      Places.initialize(getApplicationContext(), getString(R.string.google_api_key));
-    }
-    placesClient = Places.createClient(this);
-  }
-
   public void showBotNav() {
     bottomNavigationView.setVisibility(View.VISIBLE);
   }
@@ -102,17 +59,4 @@ public class MainActivity extends BaseActivity {
     bottomNavigationView.setVisibility(View.GONE);
   }
 
-  @Override
-  protected void onStart() {
-    super.onStart();
-    firebaseAuth.addAuthStateListener(authStateListener);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    if (authStateListener != null) {
-      firebaseAuth.removeAuthStateListener(authStateListener);
-    }
-  }
 }
