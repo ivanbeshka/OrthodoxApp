@@ -101,14 +101,16 @@ public class DialogFragment extends Fragment {
     //library for listen open/hide keyboard
     KeyboardVisibilityEvent.setEventListener(getActivity(), b -> {
       if (b) {//if keyboard open scroll recycle to last element
-        recyclerViewDialog.scrollToPosition(recyclerViewDialog.getAdapter().getItemCount() - 1);
+        if (recyclerViewDialog.getAdapter() != null) {
+          recyclerViewDialog.scrollToPosition(recyclerViewDialog.getAdapter().getItemCount() - 1);
+        }
       }
     });
 
     btnSelectTimeAndDate.setOnClickListener(v -> {
       FragmentTransaction ft = getParentFragmentManager().beginTransaction();
       Fragment prev = getParentFragmentManager().findFragmentByTag("create_event");
-      if (prev != null){
+      if (prev != null) {
         ft.remove(prev);
       }
       ft.addToBackStack(null);
@@ -125,7 +127,7 @@ public class DialogFragment extends Fragment {
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == RC_CREATE_EVENT){
+    if (requestCode == RC_CREATE_EVENT) {
       String msg = data.getStringExtra("msg");
       sendMessage(msg);
     }

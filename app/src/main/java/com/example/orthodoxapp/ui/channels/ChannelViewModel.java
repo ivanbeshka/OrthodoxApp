@@ -27,12 +27,13 @@ public class ChannelViewModel extends AndroidViewModel implements AsyncResponse 
 
   private SavedStateHandle data;
 
-  private final DatabaseReference databaseReference = FirebaseHelper.getUserFollowsPath();
+  private final DatabaseReference databaseReference;
 
   private FollowPlaceInteractor interactor = new FollowPlaceInteractor();
 
   public ChannelViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
     super(application);
+    databaseReference = FirebaseHelper.getUserFollowsPath();
     data = savedStateHandle;
     setDataListener();
   }

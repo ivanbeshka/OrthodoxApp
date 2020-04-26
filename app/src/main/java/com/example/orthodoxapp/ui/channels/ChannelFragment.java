@@ -25,11 +25,10 @@ public class ChannelFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
     channelViewModel = new ViewModelProvider(requireActivity()).get(ChannelViewModel.class);
+    initChannels();
     View root = inflater.inflate(R.layout.fragment_channels, container, false);
 
     recyclerViewChannel = root.findViewById(R.id.rv_channels);
-
-    initChannels();
 
     //decorations
     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
