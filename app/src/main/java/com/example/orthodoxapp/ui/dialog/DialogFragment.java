@@ -84,6 +84,8 @@ public class DialogFragment extends Fragment {
     viewModel = new ViewModelProvider(this,
         new DialogViewModelFactory(findPlace.getId())).get(DialogViewModel.class);
 
+    checkIfActivist();
+
     initView(root);
 
     initDialog();
@@ -93,7 +95,7 @@ public class DialogFragment extends Fragment {
         String msg = etMsg.getText().toString();
         sendMessage(msg);
       } else {
-        Toast.makeText(getContext(), "You are not activist and can not sending messages",
+        Toast.makeText(getContext(), "Вы не активист и не можете изменять расписание",
             Toast.LENGTH_LONG).show();
       }
     });
@@ -108,16 +110,21 @@ public class DialogFragment extends Fragment {
     });
 
     btnSelectTimeAndDate.setOnClickListener(v -> {
-      FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-      Fragment prev = getParentFragmentManager().findFragmentByTag("create_event");
-      if (prev != null) {
-        ft.remove(prev);
-      }
-      ft.addToBackStack(null);
+      if (isActivist) {
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        Fragment prev = getParentFragmentManager().findFragmentByTag("create_event");
+        if (prev != null) {
+          ft.remove(prev);
+        }
+        ft.addToBackStack(null);
 
-      CreateEventFragment fragment = new CreateEventFragment();
-      fragment.setTargetFragment(this, RC_CREATE_EVENT);
-      fragment.show(ft, "create_event");
+        CreateEventFragment fragment = new CreateEventFragment();
+        fragment.setTargetFragment(this, RC_CREATE_EVENT);
+        fragment.show(ft, "create_event");
+      } else {
+        Toast.makeText(getContext(), "Вы не активист и не можете изменять расписание",
+            Toast.LENGTH_LONG).show();
+      }
     });
 
     return root;
@@ -186,7 +193,6 @@ public class DialogFragment extends Fragment {
 
   private void initView(View root) {
     ((MainActivity) getActivity()).setToolbarTitle(findPlace.getName());
-    checkIfActivist();
 
     recyclerViewDialog = root.findViewById(R.id.recycler_view_dialog);
     btnSendMsg = root.findViewById(R.id.btn_send_msg);

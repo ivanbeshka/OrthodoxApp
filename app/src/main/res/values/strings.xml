@@ -77,11 +77,13 @@
   <string name="open_location_settings">настройки</string>
   <string name="date">Дата</string>
   <string name="add_time">Время</string>
-  <string name="date_and_time">Дата и время:</string>
+  <string name="date_and_time">Дата:</string>
   <string name="from">Начало</string>
   <string name="to">Конец</string>
   <string name="description">Описание:</string>
   <string name="write_here">Пишите здесь</string>
   <string name="search_radius">Радиус поиска:</string>
   <string name="search_one_place">Искать одно место</string>
+
+  <string name="cat_picker_theme_dialog">Dialog</string>
 </resources>

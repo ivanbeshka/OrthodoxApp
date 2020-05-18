@@ -9,6 +9,9 @@
     android:id="@+id/time_picker"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:numbersBackgroundColor="@color/colorPrimary"
+    android:headerBackground="@color/colorPrimary"
+    
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

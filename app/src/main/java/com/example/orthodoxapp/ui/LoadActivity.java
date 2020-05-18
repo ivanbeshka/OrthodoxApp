@@ -37,7 +37,7 @@ public class LoadActivity extends AppCompatActivity {
       } else {
         user = FirebaseHelper.getFirebaseUser();
         if (user != null) {
-          Toast.makeText(getApplicationContext(), "Hello " + user.getDisplayName() + " !",
+          Toast.makeText(getApplicationContext(), "Привет " + user.getDisplayName() + " !",
               Toast.LENGTH_LONG)
               .show();
           startActivity(new Intent(getApplicationContext(), MainActivity.class));

@@ -11,24 +11,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center_horizontal"
-    android:background="#ffffff"
-    android:elevation="8dp"
+    android:background="@drawable/search_shape"
+    android:elevation="10dp"
     android:minHeight="48dp"
     android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/btn_add_timetable"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:layout_marginTop="4dp"
-      android:layout_marginBottom="4dp"
-      android:layout_marginStart="4dp"
-      android:background="@drawable/btn_send_shape"
-      android:src="@drawable/ic_calendar_plus"
-      android:tint="@color/colorWhite" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:fabSize="mini"
+      app:backgroundTint="@color/colorPrimary"
+      app:tint="@color/colorSecondary"
+      android:src="@raw/calendar_plus_24px"
+      app:elevation="4dp"/>
 
     <EditText
       android:id="@+id/et_my_msg"
@@ -39,20 +38,19 @@
       android:layout_marginEnd="4dp"
       android:background="@android:color/transparent"
       android:hint="@string/enter_message"
-      android:inputType="textMultiLine"
+      android:inputType="textMultiLine|textCapSentences"
       android:imeOptions="actionDone"
       android:maxLines="4" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/btn_send_msg"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:layout_marginTop="4dp"
-      android:layout_marginBottom="4dp"
-      android:layout_marginEnd="4dp"
-      android:background="@drawable/btn_send_shape"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:fabSize="mini"
+      app:tint="@color/colorSecondary"
+      app:backgroundTint="@color/colorPrimary"
       android:src="@drawable/ic_menu_send"
-      android:tint="@color/colorWhite" />
+      app:elevation="4dp"/>
 
   </LinearLayout>
 

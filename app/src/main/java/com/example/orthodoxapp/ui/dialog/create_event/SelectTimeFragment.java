@@ -56,7 +56,7 @@ public class SelectTimeFragment extends DialogFragment {
       }
 
       Intent intent = new Intent();
-      intent.putExtra("time", fromTime + " - " + toTime);
+      intent.putExtra("time", fromTime + " ‒ " + toTime);
       getTargetFragment().onActivityResult(CreateEventFragment.RC_TARGET_FRAGMENT_TIME, 1, intent);
       dismiss();
     });
