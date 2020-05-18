@@ -5,8 +5,8 @@
   android:id="@+id/rootRegister"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/background"
-  tools:context=".ui.RegistrationActivity">
+  tools:context=".ui.RegistrationActivity"
+  android:background="@drawable/background">
 
 
   <Button
@@ -47,6 +47,7 @@
     android:layout_marginTop="100dp"
     android:layout_gravity="center"
     android:text="@string/create_acc"
+    android:textAppearance="@style/TextAppearance.AppCompat.Display4"
     android:textSize="24sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

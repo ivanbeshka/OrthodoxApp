@@ -9,7 +9,6 @@
     android:padding="10dp"
     android:onClick="@{() -> itemClickListener.onItemClick(place)}">
 
-
     <ImageView
       android:id="@+id/iv_place_image"
       android:layout_width="50dp"
@@ -47,8 +46,6 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/iv_place_image"
       app:layout_constraintTop_toBottomOf="@+id/tv_place_name" />
-
-
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <data>

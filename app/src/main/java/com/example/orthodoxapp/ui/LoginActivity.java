@@ -27,7 +27,7 @@ public class LoginActivity extends BaseActivity {
   private static final int RC_SIGN_IN = 9001;
 
   private EditText etEmail, etPass;
-  private Button btnLogin, btnCreateAcc, btnForgotPass;
+  private Button btnLogin, btnCreateAcc, btnForgotPass, btnSignInWithoutAcc;
   private View btnSignInGoogle;
   private ConstraintLayout root;
   private FirebaseAuth firebaseAuth;
@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity {
 
       firebaseAuth.signInWithEmailAndPassword(email, password)
           .addOnCompleteListener(task -> {
-
             if (task.isSuccessful()) {
               startActivity(intentMain);
             } else {
@@ -97,6 +96,15 @@ public class LoginActivity extends BaseActivity {
 
       hideProgressBar();
     });
+
+    btnSignInWithoutAcc.setOnClickListener(
+        v -> firebaseAuth.signInAnonymously().addOnCompleteListener(this, task -> {
+          if (task.isSuccessful()) {
+            startActivity(intentMain);
+          } else {
+            Toast.makeText(this, "Ошибка входа", Toast.LENGTH_SHORT).show();
+          }
+        }));
 
     btnForgotPass.setOnClickListener(
         v -> startActivity(new Intent(getApplicationContext(), ForgotPassActivity.class)));
@@ -167,7 +175,7 @@ public class LoginActivity extends BaseActivity {
     btnSignInGoogle = findViewById(R.id.btnSignInGoogle);
     root = findViewById(R.id.login_layout);
     setProgressBar(R.id.progressBarLogin);
-
+    btnSignInWithoutAcc = findViewById(R.id.btn_enter_without_register);
   }
 
 }

@@ -34,10 +34,17 @@ public class LoadActivity extends AppCompatActivity {
       FirebaseUser user = firebaseAuth.getCurrentUser();
       if (user == null) {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+      } else if (user.isAnonymous()) {
+        user = FirebaseHelper.getFirebaseUser();
+        if (user != null){
+          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+          intent.putExtra("anonymous", true);
+          startActivity(intent);
+        }
       } else {
         user = FirebaseHelper.getFirebaseUser();
         if (user != null) {
-          Toast.makeText(getApplicationContext(), "Hello " + user.getDisplayName() + " !",
+          Toast.makeText(getApplicationContext(), "Привет " + user.getDisplayName() + "!",
               Toast.LENGTH_LONG)
               .show();
           startActivity(new Intent(getApplicationContext(), MainActivity.class));

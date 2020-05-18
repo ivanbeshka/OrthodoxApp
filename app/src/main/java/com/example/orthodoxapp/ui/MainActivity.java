@@ -16,10 +16,12 @@ public class MainActivity extends BaseActivity {
   private BottomNavigationView bottomNavigationView;
   private NavController navController;
   private Toolbar toolbar;
+  private boolean isAnonymous;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    isAnonymous = getIntent().getBooleanExtra("anonymous", false);
 
     setContentView(R.layout.activity_main);
     toolbar = findViewById(R.id.toolbar_main);
@@ -59,4 +61,7 @@ public class MainActivity extends BaseActivity {
     bottomNavigationView.setVisibility(View.GONE);
   }
 
+  public boolean isAnonymous() {
+    return isAnonymous;
+  }
 }

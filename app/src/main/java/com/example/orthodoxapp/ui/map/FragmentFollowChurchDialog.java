@@ -28,12 +28,15 @@ public class FragmentFollowChurchDialog extends DialogFragment {
 
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-    builder.setMessage("Follow on " + churchName + " ?")
-        .setPositiveButton("Follow", (dialog, which) -> {
+    builder.setMessage("Подписаться на " + churchName + " ?")
+        .setPositiveButton("Да", (dialog, which) -> {
           DatabaseReference databaseReference = FirebaseHelper.getUserFollowsChurchIdPath(churchID);
           databaseReference.setValue(true);
 
-          Toast.makeText(getContext(), "Follow successful", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getContext(), "Вы успешно подписались", Toast.LENGTH_SHORT).show();
+        })
+        .setNegativeButton("Нет", (dialog, which) -> {
+          dismiss();
         });
 
     return builder.create();

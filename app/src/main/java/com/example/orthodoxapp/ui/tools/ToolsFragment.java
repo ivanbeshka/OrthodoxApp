@@ -14,23 +14,30 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ToolsFragment extends Fragment {
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.fragment_tools, container, false);
 
-        Button btnLogOut = root.findViewById(R.id.btn_logout);
-        btnLogOut.setOnClickListener(v -> {
+    Button btnLogOut = root.findViewById(R.id.btn_logout);
+    btnLogOut.setOnClickListener(v -> {
 
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        });
+      FirebaseAuth.getInstance().signOut();
+      Intent intent = new Intent(getContext(), LoginActivity.class);
+      startActivity(intent);
+      getActivity().finish();
+    });
 
-        Button btnActivist = root.findViewById(R.id.btn_im_activist);
-        btnActivist.setOnClickListener(v -> {
-            new FragmentIAmActivist().show(getParentFragmentManager(), "show activist dialog");
-        });
+    Button btnActivist = root.findViewById(R.id.btn_im_activist);
 
-        return root;
+    if (FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+      btnActivist.setVisibility(View.GONE);
+      btnLogOut.setText("Выйти");
     }
+
+    btnActivist.setOnClickListener(v -> {
+      new FragmentIAmActivist().show(getParentFragmentManager(), "show activist dialog");
+    });
+
+    return root;
+  }
 }
