@@ -3,6 +3,6 @@
   android:opacity="opaque">
   <item android:drawable="@color/colorWhite"/>
 
-  <item android:drawable="@drawable/ic_launch" android:gravity="center"/>
+  <item android:drawable="@drawable/ic_launcher" android:gravity="center"/>
 
 </layer-list>

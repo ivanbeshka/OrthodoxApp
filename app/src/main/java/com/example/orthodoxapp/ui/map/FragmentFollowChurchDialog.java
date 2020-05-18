@@ -33,7 +33,7 @@ public class FragmentFollowChurchDialog extends DialogFragment {
           DatabaseReference databaseReference = FirebaseHelper.getUserFollowsChurchIdPath(churchID);
           databaseReference.setValue(true);
 
-          Toast.makeText(getContext(), "Follow successful", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getContext(), "Вы успешно подписались", Toast.LENGTH_SHORT).show();
         })
         .setNegativeButton("Нет", (dialog, which) -> {
           dismiss();
